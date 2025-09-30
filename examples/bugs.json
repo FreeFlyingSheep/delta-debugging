@@ -1,0 +1,134 @@
+[
+    {
+        "file": "examples/bugs/bug_20605",
+        "command": [
+            "/opt/binutils-2870b1b/bin/x86_64-mingw32-objdump",
+            "-x"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=20605",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21135",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-zR3"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21135",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21136",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-da"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21136",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21138",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-R6"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21138",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21139",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-w"
+        ],
+        "error": "malloc(): corrupted top size",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21139",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21143",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-R6"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21143",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21144",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-w"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21144",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21145",
+        "command": [
+            "/opt/binutils-53f7e8e/bin/readelf",
+            "-w"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21145",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21409",
+        "command": [
+            "/opt/binutils-a6c21d4/bin/x86_64-linux-objdump",
+            "-SD"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21409",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21409_2",
+        "command": [
+            "/opt/binutils-a6c21d4/bin/x86_64-linux-objdump",
+            "-SD"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21409",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_21414",
+        "command": [
+            "/opt/binutils-a6c21d4/bin/x86_64-linux-objcopy",
+            "-Gs"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=21414",
+        "skip": false
+    },
+    {
+        "file": "examples/bugs/bug_30886",
+        "command": [
+            "/opt/binutils-be8e831/bin/x86_64-linux-nm",
+            "-D"
+        ],
+        "error": "Segmentation fault",
+        "timeout": 10.0,
+        "url": "https://sourceware.org/bugzilla/show_bug.cgi?id=30886",
+        "skip": false
+    }
+]

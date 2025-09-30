@@ -1,0 +1,17 @@
+# General
+.DS_Store
+.vscode/
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Sphinx documentation
+docs/_build/
+
+# Virtual environments
+.venv
