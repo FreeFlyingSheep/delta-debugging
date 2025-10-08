@@ -33,7 +33,7 @@ def main() -> None:
     )
     benchmark: Benchmark = Benchmark([test_case])
     benchmark.run()
-    print(benchmark.to_string(float_fmt=".7f"))
+    print(benchmark.to_string(floatfmt=".7f"))
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ It also provides benchmarks for testing and evaluating the effectiveness and eff
 
 ## Features
 
-- Multiple delta debugging algorithms: ddmin, Zipmin, HDD, ProbDD
+- Multiple delta debugging algorithms: ddmin, ZipMin, HDD, ProbDD
 - Support for various input types: files (both binary and text), strings, lists
 - Replaced mode for handling configurations (this would be useful for executable inputs)
 - Benchmarking tools to evaluate algorithm performance
@@ -29,12 +29,13 @@ See [API documentation](https://FreeFlyingSheep.github.io/delta-debugging) for m
 
 - `examples/basic.py` uses the delta debugging framework with a custom oracle function.
 - `examples/benchmark.py` uses the benchmarking tools provided by the framework.
-- `examples/bug.py` uses the delta debugging framework for minimizing executable inputs for `binutils-gdb` bugs.
+- `examples/binutils_gdb.py` uses the delta debugging framework for minimizing executable inputs for `binutils-gdb` bugs.
+- `examples/valgrind.py` uses the delta debugging framework for minimizing executable inputs for `valgrind` bugs.
 
 To run the examples, install the project as described in the installation section.
 Then use `uv run examples/<example_file>` to run the examples.
 
-To run the example of `examples/bug.py`, [Docker](https://www.docker.com/) is required.
+To run `examples/binutils_gdb.py` and `examples/valgrind.py`, [Docker](https://www.docker.com/) is required.
 Refer to `scripts/run_docker.sh` for building and running the Docker container.
 
 ## Related Projects

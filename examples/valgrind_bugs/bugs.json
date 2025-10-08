@@ -1,0 +1,15 @@
+[
+    {
+        "file": "examples/valgrind_bugs/bug_476465",
+        "command": [
+            "/opt/valgrind-bd4db67/bin/valgrind",
+            "--tool=none"
+        ],
+        "error": {
+            "stderr": "unhandled instruction 0xF8BFC261"
+        },
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=476465",
+        "skip": false
+    }
+]

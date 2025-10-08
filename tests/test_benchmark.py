@@ -34,4 +34,4 @@ def test_benchmark() -> None:
     )
     benchmark: Benchmark = Benchmark([test_case])
     benchmark.run()
-    print(benchmark.to_string(float_fmt=".5f"))
+    print(benchmark.to_string(floatfmt=".5f"))

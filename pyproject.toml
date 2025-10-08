@@ -1,12 +1,6 @@
 [project]
 name = "delta-debugging"
 version = "0.1.0"
-description = "Delta debugging framework"
-readme = "README.md"
-authors = [
-    { name = "Feiyang Chen", email = "fche0060@uni.sydney.edu.au" }
-]
-requires-python = ">=3.12"
 dependencies = [
     "kaitaistruct>=0.11",
     "tabulate>=0.9.0",
@@ -14,6 +8,25 @@ dependencies = [
     "tree-sitter>=0.25.1",
     "tree-sitter-language-pack>=0.9.0",
 ]
+requires-python = ">=3.12"
+authors = [
+    { name = "Feiyang Chen", email = "fche0060@uni.sydney.edu.au" }
+]
+description = "A delta debugging framework."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["delta debugging"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python"
+]
+
+[project.urls]
+Homepage = "https://github.com/FreeFlyingSheep/delta-debugging/"
+Documentation = "https://freeflyingsheep.github.io/delta-debugging/"
+Repository = "https://github.com/FreeFlyingSheep/delta-debugging.git"
+Changelog = "https://github.com/FreeFlyingSheep/delta-debugging/blob/master/CHANGELOG.md"
 
 [build-system]
 requires = ["uv_build>=0.8.22,<0.9.0"]

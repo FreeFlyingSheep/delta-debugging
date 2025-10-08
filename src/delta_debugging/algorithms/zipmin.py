@@ -1,4 +1,4 @@
-"""Zipmin delta debugging algorithm."""
+"""ZipMin delta debugging algorithm."""
 
 import logging
 from typing import Callable
@@ -14,22 +14,22 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class ZipMin(Algorithm):
-    """Zipmin algorithm.
+    """ZipMin algorithm.
 
     Examples:
         >>> str(ZipMin())
-        'Zipmin'
+        'ZipMin'
 
     """
 
     def __str__(self) -> str:
-        """Get the string representation of the Zipmin algorithm.
+        """Get the string representation of the ZipMin algorithm.
 
         Returns:
             Name of the algorithm.
 
         """
-        return "Zipmin"
+        return "ZipMin"
 
     def _remove_last_char(
         self,
@@ -109,7 +109,7 @@ class ZipMin(Algorithm):
         *,
         cache: Cache | None = None,
     ) -> Configuration:
-        """Run the Zipmin algorithm.
+        """Run the ZipMin algorithm.
 
         Args:
             input: Input to reduce.
@@ -120,7 +120,7 @@ class ZipMin(Algorithm):
             The reduced configuration.
 
         """
-        logger.debug("Starting Zipmin algorithm")
+        logger.debug("Starting ZipMin algorithm")
         config: Configuration = Configuration.from_input(input)
         length: int = len(config) // 2
         count: int = 0
@@ -145,5 +145,5 @@ class ZipMin(Algorithm):
             config = c
 
         config = pre + config + post
-        logger.debug(f"Zipmin algorithm completed with reduced configuration: {config}")
+        logger.debug(f"ZipMin algorithm completed with reduced configuration: {config}")
         return config

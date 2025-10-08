@@ -1,6 +1,6 @@
 [
     {
-        "file": "examples/bugs/bug_20605",
+        "file": "examples/binutils_gdb_bugs/bug_20605",
         "command": [
             "/opt/binutils-2870b1b/bin/x86_64-mingw32-objdump",
             "-x"
@@ -11,7 +11,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21135",
+        "file": "examples/binutils_gdb_bugs/bug_21135",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-zR3"
@@ -22,7 +22,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21136",
+        "file": "examples/binutils_gdb_bugs/bug_21136",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-da"
@@ -33,7 +33,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21138",
+        "file": "examples/binutils_gdb_bugs/bug_21138",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-R6"
@@ -44,7 +44,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21139",
+        "file": "examples/binutils_gdb_bugs/bug_21139",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-w"
@@ -55,7 +55,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21143",
+        "file": "examples/binutils_gdb_bugs/bug_21143",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-R6"
@@ -66,7 +66,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21144",
+        "file": "examples/binutils_gdb_bugs/bug_21144",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-w"
@@ -77,7 +77,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21145",
+        "file": "examples/binutils_gdb_bugs/bug_21145",
         "command": [
             "/opt/binutils-53f7e8e/bin/readelf",
             "-w"
@@ -88,7 +88,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21409",
+        "file": "examples/binutils_gdb_bugs/bug_21409",
         "command": [
             "/opt/binutils-a6c21d4/bin/x86_64-linux-objdump",
             "-SD"
@@ -99,7 +99,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21409_2",
+        "file": "examples/binutils_gdb_bugs/bug_21409_2",
         "command": [
             "/opt/binutils-a6c21d4/bin/x86_64-linux-objdump",
             "-SD"
@@ -110,7 +110,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_21414",
+        "file": "examples/binutils_gdb_bugs/bug_21414",
         "command": [
             "/opt/binutils-a6c21d4/bin/x86_64-linux-objcopy",
             "-Gs"
@@ -121,7 +121,7 @@
         "skip": false
     },
     {
-        "file": "examples/bugs/bug_30886",
+        "file": "examples/binutils_gdb_bugs/bug_30886",
         "command": [
             "/opt/binutils-be8e831/bin/x86_64-linux-nm",
             "-D"

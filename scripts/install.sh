@@ -1,5 +1,6 @@
 #!/bin/bash
-# Setup the environment for delta debugging
+# This script installs the delta debugging environment on a local machine.
+# It is just for reference and not intended to be run on a production system.
 set -ex
 
 src_dir=~

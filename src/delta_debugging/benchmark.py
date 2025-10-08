@@ -24,7 +24,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class Result:
-    """Result of a benchmark run."""
+    """Result of a test case run."""
 
     algorithm: str
     """Name of the algorithm used."""
@@ -35,9 +35,7 @@ class Result:
     count: int
     """Number of calls to the oracle function."""
     time: float
-    """Time (in seconds) taken for the benchmark run."""
-    extra_data: dict[str, float | int | str]
-    """Extra data to include in the result."""
+    """Time (in seconds) taken for the test case run."""
 
     @property
     def reduction_ratio(self) -> float:
@@ -71,11 +69,6 @@ class Result:
             output_size=data["output_size"],
             count=data["count"],
             time=data["time"],
-            extra_data={
-                k: v
-                for k, v in data.items()
-                if k not in {"algorithm", "input_size", "output_size", "count", "time"}
-            },
         )
 
     def to_json(self) -> dict[str, float | int | str]:
@@ -85,15 +78,15 @@ class Result:
             A JSON-serializable dictionary representation of the result.
 
         """
-        return {
+        result: dict[str, float | int | str] = {
             "algorithm": self.algorithm,
             "input_size": self.input_size,
             "output_size": self.output_size,
             "reduction_ratio": self.reduction_ratio,
             "count": self.count,
             "time": self.time,
-            **self.extra_data,
         }
+        return result
 
 
 class TestCase:
@@ -222,11 +215,13 @@ class TestCase:
             Result of each benchmark run.
 
         """
+        test_id: int = 0
         for debugger in self.debuggers:
             logger.debug(f"Running debugger with algorithm: {debugger.algorithm}")
             config: Configuration = debugger.debug(
                 self.input, show_process=show_process
             )
+            test_id += 1
 
             yield Result(
                 algorithm=str(debugger.algorithm),
@@ -234,7 +229,6 @@ class TestCase:
                 output_size=len(config),
                 count=sum(debugger.counters.values()),
                 time=debugger.time,
-                extra_data={},
             )
 
 
@@ -318,14 +312,23 @@ class Benchmark:
         self.results = [Result.from_json(result) for result in results]
         return self.results
 
-    def to_string(self, *, float_fmt: str = ".2f") -> str:
+    def to_string(self, **kwargs) -> str:
         """Get a string representation of the benchmark results.
 
         Args:
-            float_fmt: Format for floating point numbers.
+            kwargs: Additional arguments to pass to tabulate. Defaults are:
+                headers: "keys"
+                floatfmt: ".2f"
+                showindex: "always"
 
         """
         results: list[dict[str, float | int | str]] = [
             result.to_json() for result in self.results
         ]
-        return tabulate(results, headers="keys", floatfmt=float_fmt)
+        if "headers" not in kwargs:
+            kwargs["headers"] = "keys"
+        if "floatfmt" not in kwargs:
+            kwargs["floatfmt"] = ".2f"
+        if "showindex" not in kwargs:
+            kwargs["showindex"] = "always"
+        return tabulate(results, **kwargs)

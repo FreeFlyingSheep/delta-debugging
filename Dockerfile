@@ -49,9 +49,9 @@ RUN cd binutils-gdb \
 
 # Build and install valgrind from source
 RUN cd valgrind \
-    && git checkout -f VALGRIND_3_22_0 \
+    && git checkout -f bd4db67b1d386c352040b1d8fab82f5f3340fc59 \
     && ./autogen.sh \
-    && ./configure --prefix=/opt/valgrind-3_22_0 \
+    && ./configure --prefix=/opt/valgrind-bd4db67 \
     && make -j$(nproc) \
     && make install
 
@@ -64,6 +64,3 @@ RUN uv sync --all-extras
 
 # Run tests
 RUN uv run pytest -s -v
-
-# Run examples
-CMD ["uv", "run", "examples/bug.py"]
