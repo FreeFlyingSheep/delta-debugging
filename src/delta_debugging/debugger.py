@@ -1,7 +1,6 @@
 """Debugger class for delta debugging."""
 
 import logging
-from re import T
 import time
 from collections import Counter
 from typing import Callable, TypeVar
@@ -106,6 +105,19 @@ class Debugger:
             )
 
         return outcome
+
+    def validate(self, input: Input) -> bool:
+        """Validate if the given input triggers the bug.
+
+        Args:
+            input: Input to validate.
+
+        Returns:
+            True if the input triggers the bug, False otherwise.
+
+        """
+        outcome: Outcome = self.oracle(Configuration.from_input(input))
+        return outcome == Outcome.FAIL
 
     def debug(self, input: Input, *, show_process: bool = False) -> Configuration:
         """Run the debugger on the given input, showing the process if specified.

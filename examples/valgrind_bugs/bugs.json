@@ -1,15 +1,91 @@
 [
     {
+        "file": "examples/valgrind_bugs/bug_392146",
+        "command": [
+            "/opt/valgrind-bd4db67/bin/valgrind",
+            "--tool=none"
+        ],
+        "stderr": "unhandled instruction 0xD5380400",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=392146",
+        "skip": false
+    },
+    {
+        "file": "examples/valgrind_bugs/bug_412377",
+        "command": [
+            "/opt/valgrind-bd4db67/bin/valgrind",
+            "--tool=none"
+        ],
+        "stderr": "unhandled instruction 0xD50B7A20",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=412377",
+        "skip": false
+    },
+    {
+        "file": "examples/valgrind_bugs/bug_460616",
+        "command": [
+            "/opt/valgrind-d97fed7/bin/valgrind",
+            "--tool=none"
+        ],
+        "stderr": "unhandled instruction 0x4E819402",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=460616",
+        "skip": false
+    },
+    {
+        "file": "examples/valgrind_bugs/bug_469782",
+        "command": [
+            "/opt/valgrind-d97fed7/bin/valgrind",
+            "--tool=memcheck"
+        ],
+        "stderr": "WARNING: Serious error when reading debug info",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=469782",
+        "skip": false
+    },
+    {
         "file": "examples/valgrind_bugs/bug_476465",
         "command": [
             "/opt/valgrind-bd4db67/bin/valgrind",
             "--tool=none"
         ],
-        "error": {
-            "stderr": "unhandled instruction 0xF8BFC261"
-        },
+        "stderr": "unhandled instruction 0xF8BFC261",
         "timeout": 30.0,
         "url": "https://bugs.kde.org/show_bug.cgi?id=476465",
+        "skip": false
+    },
+    {
+        "file": "examples/valgrind_bugs/bug_489338",
+        "command": [
+            "/opt/valgrind-d97fed7/bin/valgrind",
+            "--tool=none"
+        ],
+        "stdout": "-322",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=489338",
+        "skip": false
+    },
+    {
+        "file": "examples/valgrind_bugs/bug_504466",
+        "command": [
+            "/opt/valgrind-fcdaa47/bin/valgrind",
+            "--tool=none",
+            "--track-fds=yes"
+        ],
+        "stderr": "Originally opened",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=504466",
+        "skip": false
+    },
+    {
+        "file": "examples/valgrind_bugs/bug_508154",
+        "command": [
+            "/opt/valgrind-49dccaf/bin/valgrind",
+            "--tool=memcheck"
+        ],
+        "stderr": "Warning: invalid file descriptor -100 in syscall fchownat()",
+        "timeout": 30.0,
+        "url": "https://bugs.kde.org/show_bug.cgi?id=508154",
         "skip": false
     }
 ]

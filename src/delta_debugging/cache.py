@@ -16,6 +16,11 @@ class Cache(MutableMapping[Configuration, Outcome]):
     """Abstract cache class."""
 
     @abstractmethod
+    def __str__(self) -> str:
+        """Get a string representation of the cache."""
+        pass
+
+    @abstractmethod
     def __getitem__(self, key: Configuration) -> Outcome:
         """Get the outcome for the given configuration.
 

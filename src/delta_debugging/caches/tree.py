@@ -36,6 +36,8 @@ class TreeCache(Cache):
         <Outcome.FAIL: 'fail'>
         >>> config in cache
         True
+        >>> print(cache)
+        Tree Cache
 
     """
 
@@ -51,6 +53,10 @@ class TreeCache(Cache):
         self._root = _Node()
         self._length = 0
         self._input = None
+
+    def __str__(self) -> str:
+        """Get a string representation of the cache."""
+        return "Tree Cache"
 
     def __getitem__(self, key: Configuration) -> Outcome:
         """Get the cached outcome for the given configuration.

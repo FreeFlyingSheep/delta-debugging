@@ -66,9 +66,33 @@ pushd ${src_dir}
 
     # Build and install valgrind from source
     pushd valgrind
-        git checkout -f VALGRIND_3_22_0
+        git checkout -f d97fed7c3e4aa7c910dfa0b6c5de12fd6cf08155
         ./autogen.sh
-        ./configure --prefix=${dst_dir}/valgrind-3_22_0
+        ./configure --prefix=${dst_dir}/valgrind-d97fed7
+        make -j"${jobs}"
+        sudo make install
+    popd
+
+    pushd valgrind
+        git checkout -f bd4db67b1d386c352040b1d8fab82f5f3340fc59
+        ./autogen.sh
+        ./configure --prefix=${dst_dir}/valgrind-bd4db67
+        make -j"${jobs}"
+        sudo make install
+    popd
+
+    pushd valgrind
+        git checkout -f 49dccafc3b661692de2d14ce14cf807940bd2d8c
+        ./autogen.sh
+        ./configure --prefix=${dst_dir}/valgrind-49dccaf
+        make -j"${jobs}"
+        sudo make install
+    popd
+
+    pushd valgrind
+        git checkout -f fcdaa474260a54af9c4b241bac9c1e9775081f78
+        ./autogen.sh
+        ./configure --prefix=${dst_dir}/valgrind-fcdaa47
         make -j"${jobs}"
         sudo make install
     popd

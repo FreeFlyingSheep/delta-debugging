@@ -1,6 +1,7 @@
 /*
  * Source code for bug_476465.
- * Use "g++ -O2 -mcpu=neoverse-v1 -o bug_476465 bug_476465.cpp" to compile.
+ * Compile with "g++ -O2 -mcpu=neoverse-v1 -o bug_476465 bug_476465.cpp".
+ * Run with "/opt/valgrind-bd4db67/bin/valgrind --tool=none ./bug_476465".
  */
 
 #include <atomic>

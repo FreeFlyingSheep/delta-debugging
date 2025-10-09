@@ -28,6 +28,8 @@ class Result:
 
     algorithm: str
     """Name of the algorithm used."""
+    cache: str
+    """Name of the cache used."""
     input_size: int
     """Size of the input."""
     output_size: int
@@ -65,6 +67,7 @@ class Result:
         """
         return cls(
             algorithm=data["algorithm"],
+            cache=data["cache"],
             input_size=data["input_size"],
             output_size=data["output_size"],
             count=data["count"],
@@ -80,6 +83,7 @@ class Result:
         """
         result: dict[str, float | int | str] = {
             "algorithm": self.algorithm,
+            "cache": self.cache,
             "input_size": self.input_size,
             "output_size": self.output_size,
             "reduction_ratio": self.reduction_ratio,
@@ -205,6 +209,21 @@ class TestCase:
             replace=replace,
         )
 
+    def validate(self) -> bool:
+        """Validate the input for all debuggers.
+
+        Returns:
+            True if the input triggers the bug, False otherwise.
+
+        """
+        triggered: bool = True
+        for debugger in self.debuggers:
+            if not debugger.validate(self.input):
+                triggered = False
+                break
+        return triggered
+
+
     def iter_run(self, *, show_process: bool = False) -> Generator[Result, None, None]:
         """Run the test case and yield results for each debugger.
 
@@ -225,6 +244,7 @@ class TestCase:
 
             yield Result(
                 algorithm=str(debugger.algorithm),
+                cache=str(debugger.cache) if debugger.cache is not None else "None",
                 input_size=len(self.input),
                 output_size=len(config),
                 count=sum(debugger.counters.values()),
@@ -255,6 +275,18 @@ class Benchmark:
         self.test_cases = test_cases
         self.file = file
         self.results = []
+
+    def validate(self) -> list[bool]:
+        """Validate the input for each test case.
+
+        Returns:
+            List of validation results. True if the input triggers the bug, False otherwise.
+
+        """
+        results: list[bool] = []
+        for test_case in self.test_cases:
+            results.append(test_case.validate())
+        return results
 
     def run(self, *, show_process: bool = False) -> list[Result]:
         """Run the benchmark and save results to file if specified.

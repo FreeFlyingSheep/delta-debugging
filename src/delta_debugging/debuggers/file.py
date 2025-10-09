@@ -116,10 +116,10 @@ class FileDebugger(CommandDebugger):
         if self.replace is None:
             return config.data
 
-        result: Sequence[Any] = self.input[config]
+        result: Sequence[Any] = config.input[config]
         contents: list[int | str] = []
         index = 0
-        for i in range(len(self.input)):
+        for i in range(len(config.input)):
             if index < len(config) and i in config[index]:
                 contents.append(result[index])
                 index += 1
