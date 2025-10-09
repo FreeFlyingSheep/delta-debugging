@@ -1,7 +1,6 @@
 """Probabilistic Delta Debugging (ProbDD) algorithm."""
 
 import logging
-from math import log
 from typing import Callable
 
 from delta_debugging.algorithm import Algorithm
