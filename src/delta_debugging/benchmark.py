@@ -223,7 +223,6 @@ class TestCase:
                 break
         return triggered
 
-
     def iter_run(self, *, show_process: bool = False) -> Generator[Result, None, None]:
         """Run the test case and yield results for each debugger.
 

@@ -37,6 +37,7 @@ Then use `uv run examples/<example_file>` to run the examples.
 
 To run `examples/binutils_gdb.py` and `examples/valgrind.py`, [Docker](https://www.docker.com/) is required.
 Refer to `scripts/run_docker.sh` for building and running the Docker container.
+Note that these two examples may take a long time to run.
 
 ## Related Projects
 
