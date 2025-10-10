@@ -3,12 +3,10 @@ from subprocess import CompletedProcess
 from typing import Any, Callable
 
 from delta_debugging import (
-    Algorithm,
     Benchmark,
     DDMin,
     HDD,
     KaitaiStructParser,
-    ProbDD,
     Outcome,
     TestCase,
     ZipMin,
@@ -34,18 +32,15 @@ def add_test_cases(test_cases: list[TestCase], bug: dict[str, Any]) -> None:
     if bug["skip"]:
         return
 
-    algorithms: list[Algorithm] = [
-        DDMin(),
-        ZipMin(),
-        ProbDD(),
-        HDD(KaitaiStructParser("ELF"), DDMin()),
-        HDD(KaitaiStructParser("ELF"), ZipMin()),
-        HDD(KaitaiStructParser("ELF"), ProbDD()),
-    ]
     args: dict[str, Any] = {
         "file": bug["file"],
         "directory": "/tmp",
-        "algorithms": algorithms,
+        "algorithms": [
+            DDMin(),
+            ZipMin(),
+            HDD(KaitaiStructParser("ELF"), DDMin()),
+            HDD(KaitaiStructParser("ELF"), ZipMin()),
+        ],
         "command": bug["command"],
         "check": check(bug),
         "caches": [None],
@@ -55,6 +50,8 @@ def add_test_cases(test_cases: list[TestCase], bug: dict[str, Any]) -> None:
         "replace": None,
     }
     test_cases.append(TestCase.make_file(**args))
+
+    args["algorithms"] = [DDMin(), ZipMin()]
     args["replace"] = b"0x00"
     test_cases.append(TestCase.make_file(**args))
 

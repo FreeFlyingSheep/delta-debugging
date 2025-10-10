@@ -26,6 +26,8 @@ logger: logging.Logger = logging.getLogger(__name__)
 class Result:
     """Result of a test case run."""
 
+    file: str
+    """File where the input is from."""
     algorithm: str
     """Name of the algorithm used."""
     cache: str
@@ -66,6 +68,7 @@ class Result:
 
         """
         return cls(
+            file=data["file"],
             algorithm=data["algorithm"],
             cache=data["cache"],
             input_size=data["input_size"],
@@ -241,9 +244,17 @@ class TestCase:
             )
             test_id += 1
 
+            file: str = "None"
+            if isinstance(debugger, FileDebugger):
+                file: str = str(debugger.file)
+            cache: str = "None"
+            if debugger.cache is not None:
+                cache = str(debugger.cache)
+
             yield Result(
+                file=file,
                 algorithm=str(debugger.algorithm),
-                cache=str(debugger.cache) if debugger.cache is not None else "None",
+                cache=cache,
                 input_size=len(self.input),
                 output_size=len(config),
                 count=sum(debugger.counters.values()),
@@ -343,10 +354,30 @@ class Benchmark:
         self.results = [Result.from_json(result) for result in results]
         return self.results
 
-    def to_string(self, **kwargs) -> str:
+    def _remove_unique_column(self, column: str, results: list[dict[str, Any]]) -> None:
+        """Remove a column from the results if it contains only a single unique value.
+
+        Args:
+            column: Column name to check and potentially remove.
+            results: List of result dictionaries.
+
+        """
+        values: set[Any] = set()
+        for result in results:
+            value: Any | None = getattr(result, column, None)
+            values.add(value)
+            if len(values) > 1:
+                break
+        if len(values) <= 1:
+            for result in results:
+                if hasattr(result, column):
+                    delattr(result, column)
+
+    def to_string(self, remove_unique_columns: bool = True, **kwargs) -> str:
         """Get a string representation of the benchmark results.
 
         Args:
+            remove_unique_columns: Whether to remove columns with a single unique value. Defaults to True.
             kwargs: Additional arguments to pass to tabulate. Defaults are:
                 headers: "keys"
                 floatfmt: ".2f"
@@ -356,6 +387,12 @@ class Benchmark:
         results: list[dict[str, float | int | str]] = [
             result.to_json() for result in self.results
         ]
+
+        if remove_unique_columns:
+            self._remove_unique_column("file", results)
+            self._remove_unique_column("algorithm", results)
+            self._remove_unique_column("cache", results)
+
         if "headers" not in kwargs:
             kwargs["headers"] = "keys"
         if "floatfmt" not in kwargs:
