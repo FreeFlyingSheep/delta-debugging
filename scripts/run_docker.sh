@@ -3,4 +3,6 @@
 # It will remove the container after it exits.
 
 docker build -t tmp-delta-debugging . && docker run --rm -it tmp-delta-debugging
-docker image rm -f tmp-delta-debugging
+
+# Uncomment the following line to remove the image after running
+# docker image rm -f tmp-delta-debugging

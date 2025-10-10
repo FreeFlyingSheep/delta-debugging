@@ -65,6 +65,12 @@ def main() -> None:
             add_test_cases(test_cases, bug)
 
     benchmark: Benchmark = Benchmark(test_cases, "/tmp/results.json")
+    validates: list[bool] = benchmark.validate()
+    if not all(validates):
+        print(validates)
+        print("Some test cases are invalid. Please check the environment.")
+        return
+
     benchmark.run(show_process=True)
     print(benchmark.to_string())
 

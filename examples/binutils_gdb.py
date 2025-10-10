@@ -1,7 +1,17 @@
 import json
-from typing import Any
+from subprocess import CompletedProcess
+from typing import Any, Callable
 
 from delta_debugging import Benchmark, DDMin, Outcome, TestCase, ZipMin
+
+
+def check(error: str) -> Callable[[CompletedProcess], Outcome]:
+    def _check(result: CompletedProcess) -> Outcome:
+        if error in result.stderr.decode("utf-8", errors="ignore"):
+            return Outcome.FAIL
+        return Outcome.PASS
+
+    return _check
 
 
 def main() -> None:
@@ -19,11 +29,7 @@ def main() -> None:
                     directory="/tmp",
                     algorithms=[DDMin(), ZipMin()],
                     command=bug["command"],
-                    check=lambda result: (
-                        Outcome.FAIL
-                        if bytes(bug["error"], "utf-8") in result.stderr
-                        else Outcome.PASS
-                    ),
+                    check=check(bug["error"]),
                     caches=[None],
                     timeout=bug["timeout"],
                     binary=True,
@@ -32,6 +38,12 @@ def main() -> None:
             )
 
     benchmark: Benchmark = Benchmark(test_cases, "/tmp/results.json")
+    validates: list[bool] = benchmark.validate()
+    if not all(validates):
+        print(validates)
+        print("Some test cases are invalid. Please check the environment.")
+        return
+
     benchmark.run(show_process=True)
     print(benchmark.to_string())
 

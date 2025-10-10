@@ -85,3 +85,9 @@ RUN uv sync --all-extras
 
 # Run tests
 RUN uv run pytest -s -v
+
+# Uncomment the following line to run an example by default
+# CMD ["uv", "run", "examples/basic.py"]
+# CMD ["uv", "run", "examples/benchmark.py"]
+# CMD ["uv", "run", "examples/binutils_gdb.py"]
+# CMD ["uv", "run", "examples/valgrind.py"]

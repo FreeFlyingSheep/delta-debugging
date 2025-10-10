@@ -85,13 +85,14 @@ class Result:
 
         """
         result: dict[str, float | int | str] = {
-            "algorithm": self.algorithm,
-            "cache": self.cache,
-            "input_size": self.input_size,
-            "output_size": self.output_size,
-            "reduction_ratio": self.reduction_ratio,
-            "count": self.count,
-            "time": self.time,
+            "File": self.file,
+            "Algorithm": self.algorithm,
+            "Cache": self.cache,
+            "Input Size": self.input_size,
+            "Output Size": self.output_size,
+            "Reduction Ratio": self.reduction_ratio,
+            "Count": self.count,
+            "Time": self.time,
         }
         return result
 
@@ -354,7 +355,9 @@ class Benchmark:
         self.results = [Result.from_json(result) for result in results]
         return self.results
 
-    def _remove_unique_column(self, column: str, results: list[dict[str, Any]]) -> None:
+    def _remove_unique_column(
+        self, column: str, results: list[dict[str, float | int | str]]
+    ) -> None:
         """Remove a column from the results if it contains only a single unique value.
 
         Args:
@@ -362,16 +365,15 @@ class Benchmark:
             results: List of result dictionaries.
 
         """
-        values: set[Any] = set()
+        values: set[float | int | str] = set()
         for result in results:
-            value: Any | None = getattr(result, column, None)
+            value: float | int | str = result[column]
             values.add(value)
             if len(values) > 1:
                 break
         if len(values) <= 1:
             for result in results:
-                if hasattr(result, column):
-                    delattr(result, column)
+                del result[column]
 
     def to_string(self, remove_unique_columns: bool = True, **kwargs) -> str:
         """Get a string representation of the benchmark results.
@@ -389,9 +391,9 @@ class Benchmark:
         ]
 
         if remove_unique_columns:
-            self._remove_unique_column("file", results)
-            self._remove_unique_column("algorithm", results)
-            self._remove_unique_column("cache", results)
+            self._remove_unique_column("File", results)
+            self._remove_unique_column("Algorithm", results)
+            self._remove_unique_column("Cache", results)
 
         if "headers" not in kwargs:
             kwargs["headers"] = "keys"

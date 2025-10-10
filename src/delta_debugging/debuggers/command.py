@@ -95,9 +95,9 @@ class CommandDebugger(Debugger):
 
         try:
             result: CompletedProcess[bytes] = subprocess.run(
-                self.command,
-                start_new_session=True,
+                " ".join(self.command),
                 capture_output=True,
+                shell=True,
                 timeout=self.timeout,
             )
         except TimeoutExpired:
