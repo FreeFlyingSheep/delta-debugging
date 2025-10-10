@@ -47,12 +47,7 @@ def add_test_cases(test_cases: list[TestCase], bug: dict[str, Any]) -> None:
         "timeout": bug["timeout"],
         "binary": True,
         "executable": True,
-        "replace": None,
     }
-    test_cases.append(TestCase.make_file(**args))
-
-    args["algorithms"] = [DDMin(), ZipMin()]
-    args["replace"] = b"0x00"
     test_cases.append(TestCase.make_file(**args))
 
 
@@ -61,8 +56,29 @@ def main() -> None:
 
     with open("examples/valgrind_bugs/bugs.json", "r") as f:
         data: Any = json.load(f)
+
         for bug in data:
-            add_test_cases(test_cases, bug)
+            if bug["skip"]:
+                continue
+
+            test_cases.append(
+                TestCase.make_file(
+                    file=bug["file"],
+                    directory="/tmp",
+                    algorithms=[
+                        DDMin(),
+                        ZipMin(),
+                        HDD(KaitaiStructParser("ELF"), DDMin()),
+                        HDD(KaitaiStructParser("ELF"), ZipMin()),
+                    ],
+                    command=bug["command"],
+                    check=check(bug),
+                    caches=[None],
+                    timeout=bug["timeout"],
+                    binary=True,
+                    executable=True,
+                )
+            )
 
     benchmark: Benchmark = Benchmark(test_cases, "/tmp/results.json")
     validates: list[bool] = benchmark.validate()

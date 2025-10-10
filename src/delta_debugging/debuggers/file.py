@@ -31,8 +31,6 @@ class FileDebugger(CommandDebugger):
     """Whether to make the file executable."""
     tmp_file: str | os.PathLike
     """Temporary file to write the configuration to."""
-    replace: bytes | str | None
-    """Value to replace in the configuration. If None, no replacement is done."""
 
     def __init__(
         self,
@@ -46,7 +44,6 @@ class FileDebugger(CommandDebugger):
         timeout: float | None = None,
         binary: bool = False,
         executable: bool = False,
-        replace: bytes | str | None = None,
     ) -> None:
         """Initialize the file based debugger.
 
@@ -60,7 +57,6 @@ class FileDebugger(CommandDebugger):
             timeout: Timeout for the command in seconds. If None, no timeout is set.
             binary: Whether to write the file in binary mode.
             executable: Whether to make the file executable.
-            replace: Value to replace in the configuration. If None, no replacement is done.
 
         """
         super().__init__(
@@ -92,40 +88,10 @@ class FileDebugger(CommandDebugger):
         if not os.path.isdir(directory):
             raise ValueError(f"Directory {directory} is not a directory.")
 
-        if isinstance(replace, str) and binary:
-            raise ValueError("Cannot use string replacement in binary mode.")
-        elif isinstance(replace, bytes) and not binary:
-            raise ValueError("Cannot use bytes replacement in text mode.")
-
         self.file = file
         self.binary = binary
         self.executable = executable
         self.tmp_file = os.path.join(directory, os.path.basename(file))
-        self.replace = replace
-
-    def _contents(self, config: Configuration) -> Sequence[Any]:
-        """Get the contents of the file for the given configuration. Do a replacement if needed.
-
-        Args:
-            config: Configuration to get the contents for.
-
-        Returns:
-            Contents of the file as a sequence of values.
-
-        """
-        if self.replace is None:
-            return config.data
-
-        result: Sequence[Any] = config.input[config]
-        contents: list[int | str] = []
-        index = 0
-        for i in range(len(config.input)):
-            if index < len(config) and i in config[index]:
-                contents.append(result[index])
-                index += 1
-            else:
-                contents.extend(self.replace)
-        return contents
 
     def write(self, file: str | os.PathLike, config: Configuration) -> None:
         """Write the configuration to the given file.
@@ -138,14 +104,14 @@ class FileDebugger(CommandDebugger):
         if self.binary:
             logger.debug(f"Writing configuration to binary file: {file}")
             with open(file, "wb") as f:
-                f.write(bytes(self._contents(config)))
+                f.write(bytes(config.data))
             logger.debug(f"Setting executable permission for file: {file}")
             if self.executable:
                 os.chmod(file, 0o755)
         else:
             logger.debug(f"Writing configuration to file: {file}")
             with open(file, "w") as f:
-                f.write(str(self._contents(config)))
+                f.write(str(config.data))
 
     def _pre_check(self, config: Configuration, command: list[str]) -> None:
         """Prepare the command for execution by writing the configuration to a temporary file.

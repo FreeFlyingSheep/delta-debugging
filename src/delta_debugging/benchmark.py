@@ -177,7 +177,6 @@ class TestCase:
         timeout: float | None = None,
         binary: bool = False,
         executable: bool = False,
-        replace: bytes | str | None = None,
     ) -> Self:
         """Create a test case for a file-based debugger.
 
@@ -191,7 +190,6 @@ class TestCase:
             timeout: Timeout for the command.
             binary: Whether to read the file in binary mode.
             executable: Whether to make the temporary file executable.
-            replace: Value to replace in the configuration. If None, no replacement is done.
 
         Returns:
             A test case instance with a file-based debugger.
@@ -210,7 +208,6 @@ class TestCase:
             timeout=timeout,
             binary=binary,
             executable=executable,
-            replace=replace,
         )
 
     def validate(self) -> bool:

@@ -10,7 +10,6 @@ It also provides benchmarks for testing and evaluating the effectiveness and eff
 
 - Multiple delta debugging algorithms: ddmin, ZipMin, HDD, ProbDD
 - Support for various input types: files (both binary and text), strings, lists
-- Replaced mode for handling configurations (this would be useful for executable inputs)
 - Benchmarking tools to evaluate algorithm performance
 - Pythonic API for easy integration and usage
 
