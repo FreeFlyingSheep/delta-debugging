@@ -33,5 +33,4 @@ def test_benchmark() -> None:
         oracle=oracle,
     )
     benchmark: Benchmark = Benchmark([test_case])
-    benchmark.run()
-    print(benchmark.to_string(floatfmt=".5f"))
+    assert all(benchmark.validate())

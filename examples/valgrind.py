@@ -28,29 +28,6 @@ def check(bug: dict[str, Any]) -> Callable[[CompletedProcess], Outcome]:
     return _check
 
 
-def add_test_cases(test_cases: list[TestCase], bug: dict[str, Any]) -> None:
-    if bug["skip"]:
-        return
-
-    args: dict[str, Any] = {
-        "file": bug["file"],
-        "directory": "/tmp",
-        "algorithms": [
-            DDMin(),
-            ZipMin(),
-            HDD(KaitaiStructParser("ELF"), DDMin()),
-            HDD(KaitaiStructParser("ELF"), ZipMin()),
-        ],
-        "command": bug["command"],
-        "check": check(bug),
-        "caches": [None],
-        "timeout": bug["timeout"],
-        "binary": True,
-        "executable": True,
-    }
-    test_cases.append(TestCase.make_file(**args))
-
-
 def main() -> None:
     test_cases: list[TestCase] = []
 
