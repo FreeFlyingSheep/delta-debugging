@@ -37,7 +37,6 @@ class FileDebugger(CommandDebugger):
         algorithm: Algorithm,
         command: list[str],
         file: str | os.PathLike,
-        directory: str | os.PathLike,
         check: Callable[[CompletedProcess], Outcome],
         *,
         cache: Cache | None = None,
@@ -51,7 +50,6 @@ class FileDebugger(CommandDebugger):
             algorithm: Algorithm to use for delta debugging.
             command: Command to run as a list of strings.
             file: File to write the configuration to.
-            directory: Directory to write the temporary file to.
             check: Function to check the result of the command.
             cache: Cache for storing test outcomes.
             timeout: Timeout for the command in seconds. If None, no timeout is set.
@@ -79,19 +77,11 @@ class FileDebugger(CommandDebugger):
             pre_check: Function to run before the command is executed.
             post_check: Function to run after the command is executed.
 
-        Raises:
-            ValueError: If the file does not exist or the directory is not a directory.
         """
-        if not os.path.exists(file):
-            raise ValueError(f"File {file} does not exist.")
-
-        if not os.path.isdir(directory):
-            raise ValueError(f"Directory {directory} is not a directory.")
 
         self.file = file
         self.binary = binary
         self.executable = executable
-        self.tmp_file = os.path.join(directory, os.path.basename(file))
 
     def write(self, file: str | os.PathLike, config: Configuration) -> None:
         """Write the configuration to the given file.
@@ -121,9 +111,8 @@ class FileDebugger(CommandDebugger):
             command: Command to modify.
 
         """
-        file: str = os.path.join("/tmp", os.path.basename(self.file))
-        self.write(file, config)
-        command.append(file)
+        self.write(self.file, config)
+        command.append(str(self.file))
 
     def _post_check(self, config: Configuration, command: list[str]) -> None:
         """Clean up after the command execution by deleting the temporary file.
@@ -133,7 +122,6 @@ class FileDebugger(CommandDebugger):
             command: Command to modify.
 
         """
-        file: str = os.path.join("/tmp", os.path.basename(self.file))
-        if os.path.exists(file):
-            os.remove(file)
+        if os.path.exists(self.file):
+            os.remove(self.file)
         command.pop()

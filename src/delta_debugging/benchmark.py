@@ -170,8 +170,8 @@ class TestCase:
         cls,
         algorithms: list[Algorithm],
         caches: list[Cache | None],
-        file: str | os.PathLike,
-        directory: str | os.PathLike,
+        input_file: str | os.PathLike,
+        output_file: str | os.PathLike,
         command: list[str],
         check: Callable[[CompletedProcess], Outcome],
         timeout: float | None = None,
@@ -183,8 +183,8 @@ class TestCase:
         Args:
             algorithms: List of algorithms to benchmark.
             caches: List of caches to use.
-            file: File to be reduced.
-            directory: Directory to save temporary files to.
+            input_file: File to be reduced.
+            output_file: File to write the reduced input to.
             command: Command to run the program to be debugged.
             check: Function to check the outcome of the command.
             timeout: Timeout for the command.
@@ -195,14 +195,13 @@ class TestCase:
             A test case instance with a file-based debugger.
 
         """
-        input: Input = Input.from_file(file, executable=executable)
+        input: Input = Input.from_file(input_file, executable=executable)
         return cls(
             input=input,
             algorithms=algorithms,
             caches=caches,
             debugger_cls=FileDebugger,
-            file=file,
-            directory=directory,
+            file=output_file,
             command=command,
             check=check,
             timeout=timeout,

@@ -8,7 +8,7 @@ from delta_debugging.caches import HashCache
 from delta_debugging.caches import TreeCache
 from delta_debugging.configuration import Configuration
 from delta_debugging.debugger import Debugger
-from delta_debugging.debuggers import CommandDebugger
+from delta_debugging.debuggers import CommandDebugger, FileDebugger
 from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 from delta_debugging.parser import Node, Parser
@@ -30,6 +30,7 @@ __all__: list[str] = [
     "Configuration",
     "Debugger",
     "CommandDebugger",
+    "FileDebugger",
     "Input",
     "Outcome",
     "Node",

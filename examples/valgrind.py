@@ -1,4 +1,5 @@
 import json
+import os
 from subprocess import CompletedProcess
 from typing import Any, Callable
 
@@ -40,8 +41,8 @@ def main() -> None:
 
             test_cases.append(
                 TestCase.make_file(
-                    file=bug["file"],
-                    directory="/tmp",
+                    input_file=bug["file"],
+                    output_file=os.path.join("/tmp", bug["file"]),
                     algorithms=[
                         DDMin(),
                         ZipMin(),
