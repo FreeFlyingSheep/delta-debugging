@@ -19,7 +19,7 @@ RUN cd binutils-gdb \
     && git checkout -f 2870b1ba83fc0e0ee7eadf72d614a7ec4591b169 \
     && mkdir build-2870b1b \
     && cd build-2870b1b \
-    && ../configure --prefix=/opt/binutils-2870b1b --target=x86_64-mingw32 --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-werror \
+    && ../configure --prefix=/opt/binutils-2870b1b --target=x86_64-mingw32 --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-gprofng --disable-werror \
     && make -j$(nproc) \
     && make install
 
@@ -27,7 +27,7 @@ RUN cd binutils-gdb \
     && git checkout -f 53f7e8ea7fad1fcff1b58f4cbd74e192e0bcbc1d \
     && mkdir build-53f7e8e \
     && cd build-53f7e8e \
-    && ../configure --prefix=/opt/binutils-53f7e8e --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-werror \
+    && ../configure --prefix=/opt/binutils-53f7e8e --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-gprofng --disable-werror \
     && make -j$(nproc) \
     && make install
 
@@ -35,7 +35,7 @@ RUN cd binutils-gdb \
     && git checkout -f a6c21d4a553de184562fd8409a5bcd3f2cc2561a \
     && mkdir build-a6c21d4 \
     && cd build-a6c21d4 \
-    && ../configure --prefix=/opt/binutils-a6c21d4 --target=x86_64-linux --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-werror \
+    && ../configure --prefix=/opt/binutils-a6c21d4 --target=x86_64-linux --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-gprofng --disable-werror \
     && make -j$(nproc) \
     && make install
 
@@ -43,7 +43,7 @@ RUN cd binutils-gdb \
     && git checkout -f be8e83130996a5300e15b415ed290de1af910361 \
     && mkdir build-be8e831 \
     && cd build-be8e831 \
-    && ../configure --prefix=/opt/binutils-be8e831 --target=x86_64-linux --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-werror \
+    && ../configure --prefix=/opt/binutils-be8e831 --target=x86_64-linux --disable-shared --disable-gdb --disable-libdecnumber --disable-readline --disable-sim --disable-gprofng --disable-werror \
     && make -j$(nproc) \
     && make install
 

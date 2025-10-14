@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `Benchmark` class to use `FileDebugger`.
 - Optimized the `Configuration` class.
 - Updated `ZipMin` class for better performance.
+- Updated `install.sh`.
 
 ## [0.1.0] - 2025-10-11
 
