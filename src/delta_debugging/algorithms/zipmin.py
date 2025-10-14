@@ -53,13 +53,14 @@ class ZipMin(Algorithm):
             A tuple of the updated prefix, configuration, and postfix.
 
         """
-        c: Configuration = pre + config[:-1] + post
+        conf: Configuration = config[:-1]
+        c: Configuration = pre.concat(conf, post)
         outcome: Outcome = self._test(oracle, c, cache=cache)
         logger.debug(f"Testing configuration by removing last char: {c} => {outcome}")
         if outcome == Outcome.FAIL:
-            return pre, config[:-1], post
+            return pre, conf, post
         else:
-            return pre, config[:-1], config[-1] + post
+            return pre, conf, config[-1] + post
 
     def _remove_check_each_fragment(
         self,
@@ -90,7 +91,7 @@ class ZipMin(Algorithm):
 
         for i in range(0, len(config), length):
             removed, remaining = config[i : i + length], config[i + length :]
-            conf: Configuration = pre + c + remaining + post
+            conf: Configuration = pre.concat(c, remaining, post)
             outcome: Outcome = self._test(oracle, conf, cache=cache)
             logger.debug(
                 f"Testing configuration by removing fragments: {conf} => {outcome}"
@@ -144,6 +145,6 @@ class ZipMin(Algorithm):
                     length = length // 2
             config = c
 
-        config = pre + config + post
+        config = pre.concat(config, post)
         logger.debug(f"ZipMin algorithm completed with reduced configuration: {config}")
         return config

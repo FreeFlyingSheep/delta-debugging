@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed file handling in `FileDebugger`.
 - Updated `Benchmark` class to use `FileDebugger`.
+- Optimized the `Configuration` class.
+- Updated `ZipMin` class for better performance.
 
 ## [0.1.0] - 2025-10-11
 
@@ -20,4 +22,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Examples for using the framework.
 - API documentation.
 
+[unreleased]: https://github.com/FreeFlyingSheep/delta-debugging/tree/main
 [0.1.0]: https://github.com/FreeFlyingSheep/delta-debugging/releases/tag/v0.1.0
