@@ -29,8 +29,6 @@ class FileDebugger(CommandDebugger):
     """Whether to write the file in binary mode."""
     executable: bool
     """Whether to make the file executable."""
-    tmp_file: str | os.PathLike
-    """Temporary file to write the configuration to."""
 
     def __init__(
         self,

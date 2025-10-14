@@ -42,7 +42,7 @@ def main() -> None:
             test_cases.append(
                 TestCase.make_file(
                     input_file=bug["file"],
-                    output_file=os.path.join("/tmp", bug["file"]),
+                    output_file=os.path.join("/tmp", os.path.basename(bug["file"])),
                     algorithms=[
                         DDMin(),
                         ZipMin(),
