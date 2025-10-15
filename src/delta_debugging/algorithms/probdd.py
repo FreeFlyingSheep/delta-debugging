@@ -1,12 +1,11 @@
 """Probabilistic Delta Debugging (ProbDD) algorithm."""
 
 import logging
-from typing import Callable
+from typing import Any, Callable
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -32,20 +31,21 @@ class ProbDD(Algorithm):
         """
         return "ProbDD"
 
-    def _sample(self, input: Input, probabilities: dict[int, float]) -> Configuration:
+    def _sample(
+        self, config: Configuration, probabilities: dict[int, float]
+    ) -> Configuration:
         """Sample a configuration based on the given probabilities.
 
         Args:
-            input: Input to sample from.
-            probabilities: Probabilities for each element in the input.
+            config: Configuration to sample from.
+            probabilities: Probabilities for each element in the configuration.
 
         Returns:
             Sampled configuration.
 
         """
-        config: Configuration = Configuration.empty(input)
+        c: Configuration = []
         keys: list[int] = list(probabilities.keys())
-
         last: float = 0.0
         i: int = 0
         k: int = 0
@@ -60,7 +60,7 @@ class ProbDD(Algorithm):
 
             prob: float = 1.0
             for j in range(k, i + 1):
-                prob *= 1 - probabilities[keys[j]]
+                prob *= 1.0 - probabilities[keys[j]]
             prob *= i - k + 1
             if prob < last:
                 break
@@ -70,11 +70,11 @@ class ProbDD(Algorithm):
 
         while i > k:
             i -= 1
-            config += Configuration(input, [keys[i]])
+            c.append(keys[i])
 
-        return config
+        return c
 
-    def _ratio(self, deleted, probabilities) -> float:
+    def _ratio(self, deleted: Configuration, probabilities: dict[int, float]) -> float:
         """Calculate the ratio of the probabilities of the deleted elements.
 
         Args:
@@ -87,13 +87,55 @@ class ProbDD(Algorithm):
         """
         ratio: float = 1.0
         for d in deleted:
-            if probabilities[d] > 0 and probabilities[d] < 1:
-                ratio *= 1 - probabilities[d]
-        return 1 / (1 - ratio)
+            if probabilities[d] > 0.0 and probabilities[d] < 1.0:
+                ratio *= 1.0 - probabilities[d]
+        return 1.0 / (1.0 - ratio)
+
+    def _difference(
+        self, config1: Configuration, config2: Configuration
+    ) -> Configuration:
+        """Get the difference between two configurations.
+
+        Args:
+            config1: First configuration.
+            config2: Second configuration.
+
+        Returns:
+            Difference between the two configurations.
+
+        """
+        config: set[Any] = set(config2)
+        return [c for c in config1 if c not in config]
+
+    def _stop(self, probabilities: dict[int, float], threshold: float) -> bool:
+        """Check if the algorithm should stop based on the probabilities and threshold.
+
+        Args:
+            probabilities: Probabilities for each element.
+            threshold: Threshold for stopping.
+
+        Returns:
+            Whether the algorithm should stop.
+
+        """
+        probs: set[float] = set(probabilities.values())
+        if probs in ({0.0}, {1.0}, {0.0, 1.0}):
+            return True
+
+        convergence: bool = True
+        for probability in probabilities.values():
+            if probability < threshold:
+                convergence = False
+                break
+
+        if convergence:
+            return True
+
+        return False
 
     def run(
         self,
-        input: Input,
+        config: Configuration,
         oracle: Callable[[Configuration], Outcome],
         *,
         cache: Cache | None = None,
@@ -101,7 +143,7 @@ class ProbDD(Algorithm):
         """Run the ProbDD algorithm.
 
         Args:
-            input: Input to reduce.
+            config: Configuration to reduce.
             oracle: The oracle function.
             cache: Cache for storing test outcomes.
 
@@ -110,25 +152,14 @@ class ProbDD(Algorithm):
 
         """
         logger.debug("Starting ProbDD algorithm")
-        config: Configuration = Configuration.from_input(input)
-        passed: Configuration = Configuration.from_input(input)
+        passed: Configuration = list(config)
         probabilities: dict[int, float] = {}
         threshold: float = 0.8
         for c in config:
             probabilities[c] = 0.1
 
         while True:
-            probs: set[float] = set(probabilities.values())
-            if probs == {0.0} or probs == {1.0} or probs == {0.0, 1.0}:
-                break
-
-            convergence: bool = True
-            for probability in probabilities.values():
-                if probability < threshold:
-                    convergence = False
-                    break
-
-            if convergence:
+            if self._stop(probabilities, threshold):
                 break
 
             probabilities = dict(
@@ -136,10 +167,10 @@ class ProbDD(Algorithm):
             )
             logger.debug(f"Current probabilities: {probabilities}")
 
-            deleted: Configuration = self._sample(input, probabilities)
+            deleted: Configuration = self._sample(config, probabilities)
             logger.debug(f"Sampling configuration: {deleted}")
 
-            config = passed - deleted
+            config = self._difference(passed, deleted)
             outcome: Outcome = self._test(oracle, config, cache=cache)
             logger.debug(f"Testing configuration: {config} => {outcome}")
             if outcome == Outcome.FAIL:

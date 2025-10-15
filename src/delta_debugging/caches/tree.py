@@ -1,12 +1,11 @@
 """Tree-based cache for delta debugging."""
 
 import logging
-from typing import Generator
+from typing import Any, Generator
 from dataclasses import dataclass, field
 
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -19,7 +18,7 @@ class _Node:
 
     value: Outcome | None = None
     """Cached outcome."""
-    children: dict[int, "_Node"] = field(default_factory=dict)
+    children: dict[Any, "_Node"] = field(default_factory=dict)
     """Children nodes."""
 
 
@@ -27,10 +26,9 @@ class TreeCache(Cache):
     """Tree-based cache.
 
     Examples:
-        >>> from delta_debugging import Configuration, Input, Outcome, TreeCache
+        >>> from delta_debugging import Configuration, Outcome, TreeCache
         >>> cache = TreeCache()
-        >>> input = Input([1, 2, 3])
-        >>> config = Configuration.from_input(input)
+        >>> config = [1, 2, 3]
         >>> cache[config] = Outcome.FAIL
         >>> cache[config]
         <Outcome.FAIL: 'fail'>
@@ -45,14 +43,11 @@ class TreeCache(Cache):
     """Root node of the tree."""
     _length: int = 0
     """Number of configurations in the cache."""
-    _input: Input | None
-    """Input associated with the cache."""
 
     def __init__(self) -> None:
         """Initialize the tree-based cache."""
         self._root = _Node()
         self._length = 0
-        self._input = None
 
     def __str__(self) -> str:
         """Get a string representation of the cache."""
@@ -73,11 +68,6 @@ class TreeCache(Cache):
         """
         logger.debug(f"Cache lookup for configuration: {key}")
 
-        if self._input is None:
-            raise KeyError(f"{key} not found")
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
-
         node: _Node = self._root
         for c in key:
             if c not in node.children:
@@ -94,16 +84,8 @@ class TreeCache(Cache):
             key: Configuration to cache.
             value: Outcome to cache.
 
-        Raises:
-            ValueError: If the configuration input does not match the cache input.
-
         """
         logger.debug(f"Caching outcome {value} for configuration: {key}")
-
-        if self._input is None:
-            self._input = key.input
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
 
         node: _Node = self._root
         for c in key:
@@ -132,16 +114,11 @@ class TreeCache(Cache):
         Returns:
             True if the configuration is in the cache, False otherwise.
 
-        Raises:
-            ValueError: If the configuration input does not match the cache input.
-
         """
         logger.debug(f"Cache contains check for configuration: {key}")
 
-        if not isinstance(key, Configuration) or self._input is None:
+        if not isinstance(key, list):
             return False
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
 
         node: _Node = self._root
         for c in key:
@@ -158,15 +135,12 @@ class TreeCache(Cache):
 
         Raises:
             KeyError: If the configuration is not in the cache.
-            ValueError: If the configuration input does not match the cache input.
 
         """
         logger.debug(f"Deleting cache entry for configuration: {key}")
 
-        if not isinstance(key, Configuration) or self._input is None:
+        if not isinstance(key, list):
             raise KeyError(f"{key} not found")
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
 
         node: _Node = self._root
         for c in key:
@@ -180,16 +154,13 @@ class TreeCache(Cache):
 
     def __iter__(self) -> Generator[Configuration, None, None]:
         """Iterate over the configurations in the cache."""
-        if self._input is None:
-            return
-
-        queue: list[tuple[list[int], _Node]] = []
+        queue: list[tuple[list[Any], _Node]] = []
         for k, v in self._root.children.items():
             queue.append(([k], v))
         while queue:
             config, node = queue.pop()
             if node.value is not None:
-                yield Configuration(self._input, config)
+                yield config
             for k, v in node.children.items():
                 queue.append((config + [k], v))
 
@@ -201,13 +172,12 @@ class TreeCache(Cache):
         """Clear the cache."""
         logger.debug("Clearing cache")
 
-        self._input = None
         self._root = _Node()
 
     def to_string(self) -> str:
         """Get a string representation of the cache."""
         output: list[str] = ["TreeCache contents:"]
-        queue: list[tuple[list[int], _Node]] = []
+        queue: list[tuple[list[Any], _Node]] = []
         for k, v in self._root.children.items():
             queue.append(([k], v))
         while queue:

@@ -12,10 +12,9 @@ from tabulate import tabulate
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
-from delta_debugging.configuration import Configuration
+from delta_debugging.configuration import Configuration, load
 from delta_debugging.debugger import Debugger
 from delta_debugging.debuggers import CommandDebugger, FileDebugger
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -103,14 +102,14 @@ class TestCase:
     __test__: bool = False
     """Prevent pytest from collecting this class as a test case."""
 
-    input: Input
-    """Input to be reduced."""
+    config: Configuration
+    """Configuration to be reduced."""
     debuggers: list[Debugger]
     """List of debuggers to benchmark."""
 
     def __init__(
         self,
-        input: Input,
+        config: Configuration,
         algorithms: list[Algorithm],
         caches: list[Cache | None],
         debugger_cls: type[Debugger],
@@ -119,14 +118,14 @@ class TestCase:
         """Initialize the test case. Create a list of debuggers to benchmark.
 
         Args:
-            input: Input to be reduced.
+            config: Configuration to be reduced.
             algorithms: List of algorithms to benchmark.
             caches: List of caches to use.
             debugger_cls: Debugger class to use.
             **kwargs: Additional arguments to pass to the debugger.
 
         """
-        self.input = input
+        self.config = config
         self.debuggers = []
         for algorithm, cache in itertools.product(algorithms, caches):
             self.debuggers.append(debugger_cls.make(algorithm, cache=cache, **kwargs))
@@ -134,7 +133,7 @@ class TestCase:
     @classmethod
     def make_command(
         cls,
-        input: Input,
+        config: Configuration,
         algorithms: list[Algorithm],
         caches: list[Cache | None],
         command: list[str],
@@ -144,7 +143,7 @@ class TestCase:
         """Create a test case for a command-line based debugger.
 
         Args:
-            input: Input to be reduced.
+            config: Configuration to be reduced.
             algorithms: List of algorithms to benchmark.
             caches: List of caches to use.
             command: Command to run the program to be debugged.
@@ -156,7 +155,7 @@ class TestCase:
 
         """
         return cls(
-            input=input,
+            config=config,
             algorithms=algorithms,
             caches=caches,
             debugger_cls=CommandDebugger,
@@ -195,9 +194,9 @@ class TestCase:
             A test case instance with a file-based debugger.
 
         """
-        input: Input = Input.from_file(input_file, executable=executable)
+        config: Configuration = load(input_file, binary=binary)
         return cls(
-            input=input,
+            config=config,
             algorithms=algorithms,
             caches=caches,
             debugger_cls=FileDebugger,
@@ -218,7 +217,7 @@ class TestCase:
         """
         triggered: bool = True
         for debugger in self.debuggers:
-            if not debugger.validate(self.input):
+            if not debugger.validate(self.config):
                 triggered = False
                 break
         return triggered
@@ -237,7 +236,7 @@ class TestCase:
         for debugger in self.debuggers:
             logger.debug(f"Running debugger with algorithm: {debugger.algorithm}")
             config: Configuration = debugger.debug(
-                self.input, show_process=show_process
+                self.config, show_process=show_process
             )
             test_id += 1
 
@@ -252,7 +251,7 @@ class TestCase:
                 file=file,
                 algorithm=str(debugger.algorithm),
                 cache=cache,
-                input_size=len(self.input),
+                input_size=len(self.config),
                 output_size=len(config),
                 count=sum(debugger.counters.values()),
                 time=debugger.time,

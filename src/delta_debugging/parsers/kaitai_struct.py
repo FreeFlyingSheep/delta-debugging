@@ -3,7 +3,7 @@
 import logging
 from typing import cast, get_args, Literal
 
-from delta_debugging.input import Input
+from delta_debugging.configuration import Configuration
 from delta_debugging.parser import Node, Parser
 from delta_debugging.parsers.kaitai_structs import parse_elf
 
@@ -67,20 +67,20 @@ class KaitaiStructParser(Parser):
             )
             node.children.append(child)
 
-    def parse(self, input: Input) -> Node:
-        """Parse the input and return its tree representation.
+    def parse(self, config: Configuration) -> Node:
+        """Parse the configuration and return its tree representation.
 
         Args:
-            input: Input to parse.
+            config: Configuration to parse.
 
         Returns:
             Root node of the tree representation.
 
         """
-        logger.debug(f"Parsing input of length {len(input)} as {self.binary}")
+        logger.debug(f"Parsing configuration of length {len(config)} as {self.binary}")
 
         if self.binary == "elf":
-            root: Node = parse_elf(input)
+            root: Node = parse_elf(config)
         else:
             raise ValueError(f"Unsupported binary format: {self.binary}")
         if self.expand_bytes:

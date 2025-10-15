@@ -6,8 +6,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import TextIO
 
-from delta_debugging.input import Input
-
+from delta_debugging.configuration import Configuration
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -76,11 +75,11 @@ class Parser(ABC):
         self.expand_whitespace: bool = expand_whitespace
 
     @abstractmethod
-    def parse(self, input: Input) -> Node:
-        """Parse the input into a hierarchical structure.
+    def parse(self, config: Configuration) -> Node:
+        """Parse the configuration into a hierarchical structure.
 
         Args:
-            input: Input to parse.
+            config: configuration to parse.
 
         Returns:
             Root node of the hierarchical structure.

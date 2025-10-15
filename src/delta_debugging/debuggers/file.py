@@ -3,7 +3,7 @@
 import logging
 import os
 from subprocess import CompletedProcess
-from typing import Any, Callable, Sequence
+from typing import Callable
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
@@ -92,14 +92,14 @@ class FileDebugger(CommandDebugger):
         if self.binary:
             logger.debug(f"Writing configuration to binary file: {file}")
             with open(file, "wb") as f:
-                f.write(bytes(config.data))
+                f.write(bytes(config))
             logger.debug(f"Setting executable permission for file: {file}")
             if self.executable:
                 os.chmod(file, 0o755)
         else:
             logger.debug(f"Writing configuration to file: {file}")
             with open(file, "w") as f:
-                f.write(str(config.data))
+                f.write(str(config))
 
     def _pre_check(self, config: Configuration, command: list[str]) -> None:
         """Prepare the command for execution by writing the configuration to a temporary file.

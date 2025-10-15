@@ -6,7 +6,6 @@ from typing import Callable
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -54,7 +53,7 @@ class ZipMin(Algorithm):
 
         """
         conf: Configuration = config[:-1]
-        c: Configuration = pre.concat(conf, post)
+        c: Configuration = pre + conf + post
         outcome: Outcome = self._test(oracle, c, cache=cache)
         logger.debug(f"Testing configuration by removing last char: {c} => {outcome}")
         if outcome == Outcome.FAIL:
@@ -86,12 +85,12 @@ class ZipMin(Algorithm):
             A tuple of the updated configuration and the number of fragments removed.
 
         """
-        c: Configuration = Configuration.empty(config.input)
+        c: Configuration = []
         count: int = 0
 
         for i in range(0, len(config), length):
             removed, remaining = config[i : i + length], config[i + length :]
-            conf: Configuration = pre.concat(c, remaining, post)
+            conf: Configuration = pre + c + remaining + post
             outcome: Outcome = self._test(oracle, conf, cache=cache)
             logger.debug(
                 f"Testing configuration by removing fragments: {conf} => {outcome}"
@@ -105,7 +104,7 @@ class ZipMin(Algorithm):
 
     def run(
         self,
-        input: Input,
+        config: Configuration,
         oracle: Callable[[Configuration], Outcome],
         *,
         cache: Cache | None = None,
@@ -113,7 +112,7 @@ class ZipMin(Algorithm):
         """Run the ZipMin algorithm.
 
         Args:
-            input: Input to reduce.
+            config: Configuration to reduce.
             oracle: The oracle function.
             cache: Cache for storing test outcomes.
 
@@ -122,15 +121,14 @@ class ZipMin(Algorithm):
 
         """
         logger.debug("Starting ZipMin algorithm")
-        config: Configuration = Configuration.from_input(input)
         length: int = len(config) // 2
         count: int = 0
         deficit: int = 0
-        pre: Configuration = Configuration.empty(config.input)
-        post: Configuration = Configuration.empty(config.input)
+        pre: Configuration = []
+        post: Configuration = []
 
         while length > 0 and len(config) > 0:
-            c: Configuration = Configuration.empty(config.input)
+            c: Configuration = []
             if count % 2:
                 for _ in range(deficit):
                     pre, c, post = self._remove_last_char(
@@ -145,6 +143,6 @@ class ZipMin(Algorithm):
                     length = length // 2
             config = c
 
-        config = pre.concat(config, post)
+        config = pre + config + post
         logger.debug(f"ZipMin algorithm completed with reduced configuration: {config}")
         return config

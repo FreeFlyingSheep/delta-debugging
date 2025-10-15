@@ -6,7 +6,6 @@ from delta_debugging import (
     Configuration,
     DDMin,
     HashCache,
-    Input,
     Outcome,
 )
 
@@ -21,21 +20,20 @@ def my_check(result: CompletedProcess) -> Outcome:
 
 
 def pre_check(config: Configuration, command: list[str]) -> None:
-    command.extend(config.data)
+    command.extend(config)
 
 
 def test_command() -> None:
     command: list[str] = ["ls"]
     options: list[str] = ["-l", "-a", "-h"]
-    input: Input = Input(options)
     algorithm: DDMin = DDMin()
     cache: HashCache = HashCache()
     debugger: CommandDebugger = CommandDebugger(
         algorithm, command, my_check, cache=cache, pre_check=pre_check
     )
-    result: Configuration = debugger.debug(input)
+    result: Configuration = debugger.debug(options)
     print(cache.to_string())
-    assert input[result] == ["-a"]
+    assert result == ["-a"]
 
 
 def test_docstring() -> None:

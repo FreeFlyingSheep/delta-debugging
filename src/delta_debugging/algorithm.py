@@ -6,7 +6,6 @@ from typing import Callable
 
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -29,15 +28,15 @@ class Algorithm(ABC):
     @abstractmethod
     def run(
         self,
-        input: Input,
+        config: Configuration,
         oracle: Callable[[Configuration], Outcome],
         *,
         cache: Cache | None = None,
     ) -> Configuration:
-        """Run the algorithm on the given input.
+        """Run the algorithm on the given configuration.
 
         Args:
-            input: Input to reduce.
+            config: Configuration to reduce.
             oracle: The oracle function.
             cache: Cache for storing test outcomes.
 

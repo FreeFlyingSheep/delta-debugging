@@ -8,7 +8,7 @@ from tree_sitter import Node as TSNode
 from tree_sitter import Parser as TSParser
 from tree_sitter_language_pack import SupportedLanguage, get_parser
 
-from delta_debugging.input import Input
+from delta_debugging.configuration import Configuration
 from delta_debugging.parser import Node, Parser
 
 
@@ -62,19 +62,21 @@ class TreeSitterParser(Parser):
         n.children = [self._parse(child, depth + 1) for child in node.children]
         return n
 
-    def parse(self, input: Input) -> Node:
-        """Parse the input into a tree of nodes.
+    def parse(self, config: Configuration) -> Node:
+        """Parse the configuration into a tree of nodes.
 
         Args:
-            input: The input to parse.
+            config: The configuration to parse.
 
         Returns:
             The root node of the parsed tree.
 
         """
-        logger.debug(f"Parsing input of length {len(input)} as {self.language}")
+        logger.debug(
+            f"Parsing configuration of length {len(config)} as {self.language}"
+        )
 
-        tree: TSTree = self.parser.parse(input.data_type(input.data))
+        tree: TSTree = self.parser.parse(bytes(config))
         return self._parse(tree.root_node, 0)
 
     def __str__(self) -> str:
@@ -84,4 +86,7 @@ class TreeSitterParser(Parser):
             String representation of the parser.
 
         """
-        return f"TreeSitterParser for {self.language} (expand_whitespace={self.expand_whitespace})"
+        return (
+            f"TreeSitterParser for {self.language} "
+            + f"(expand_whitespace={self.expand_whitespace})"
+        )

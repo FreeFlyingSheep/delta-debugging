@@ -47,10 +47,13 @@ exclude = [
 
 [tool.ruff.lint]
 # Enable Google convention `pydocstyle` rules.
-select = ["D"]
+select = ["D", "E", "F", "W", "PL"]
 # Ignore specific `pydocstyle` rules.
-ignore = ["D203", "D213"]
+ignore = ["D203", "D213", "E501", "PLR0913"]
 
 [tool.ruff.lint.per-file-ignores]
 # Ignore `D` rules everywhere except for the `src/` directory.
-"!src/**.py" = ["D"]
+"!src/**.py" = ["D", "PL"]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 200

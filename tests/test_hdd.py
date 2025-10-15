@@ -5,7 +5,6 @@ from delta_debugging import (
     DDMin,
     Debugger,
     HDD,
-    Input,
     Outcome,
     TreeSitterParser,
 )
@@ -13,7 +12,7 @@ from delta_debugging import (
 
 def oracle(config: Configuration) -> Outcome:
     try:
-        data: bytes = bytes(config.data)
+        data: bytes = bytes(config)
         print(data)
         exec(data)
     except ZeroDivisionError:
@@ -38,11 +37,10 @@ def g(x):
 z = f(x)
 print(g(z))
 """.encode("utf8")
-    input: Input = Input(source)
     debugger: Debugger = Debugger(HDD(parser, DDMin()), oracle)
-    result: Configuration = debugger.debug(input)
+    result: Configuration = debugger.debug(list(source))
     print(debugger.to_string())
-    assert bytes(input[result]) == b"x = 1\ndef f(x):\nreturn x / 0\nz = f(x)\n"
+    assert bytes(result) == b"x = 1\ndef f(x):\nreturn x / 0\nz = f(x)\n"
 
 
 def test_docstring() -> None:

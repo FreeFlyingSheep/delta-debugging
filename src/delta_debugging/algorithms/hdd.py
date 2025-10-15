@@ -1,13 +1,12 @@
 """Hierarchical Delta Debugging (HDD) delta debugging algorithm."""
 
 import logging
-from typing import Any, Callable
+from typing import Callable
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
 
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 from delta_debugging.parser import Node, Parser
 
@@ -18,8 +17,8 @@ logger: logging.Logger = logging.getLogger(__name__)
 class _Tree:
     """HDD tree."""
 
-    input: Input
-    """Original input."""
+    config: Configuration
+    """Original configuration."""
     expand_whitespace: bool
     """Whether to expand whitespace."""
     depth: int
@@ -27,16 +26,18 @@ class _Tree:
     root: Node
     """The root node of the tree."""
 
-    def __init__(self, root: Node, input: Input, expand_whitespace: bool) -> None:
+    def __init__(
+        self, root: Node, config: Configuration, expand_whitespace: bool
+    ) -> None:
         """Initialize the HDD tree.
 
         Args:
             root: Root node of the tree.
-            input: Input to reduce.
+            config: Configuration to reduce.
             expand_whitespace: Whether to expand whitespace.
 
         """
-        self.input = input
+        self.config = config
         self.expand_whitespace = expand_whitespace
         self.depth = 0
         self.root = self._parse(root, 0)
@@ -71,17 +72,10 @@ class _Tree:
             Configuration with expanded whitespace.
 
         """
-        if node.end >= len(self.input):
-            return Configuration.empty(self.input)
-
-        c: Configuration = Configuration(self.input, [node.end])
-        is_space: Any | None = getattr(
-            self.input.data_type(self.input[c]), "isspace", None
-        )
-        if callable(is_space) and is_space():
-            return Configuration(self.input, [node.end])
-
-        return Configuration.empty(self.input)
+        for i in range(node.end + 1, min(node.end + 4, len(self.config) + 1)):
+            if bytes(self.config[node.end : i]).isspace():
+                return self.config[node.end : i]
+        return []
 
     def _unparse(self, node: Node) -> Configuration:
         """Unparse the given node.
@@ -94,15 +88,15 @@ class _Tree:
 
         """
         if not node.exists:
-            return Configuration.empty(self.input)
+            return []
 
         if not node.children:
-            config = Configuration(self.input, range(node.start, node.end))
+            config = self.config[node.start : node.end]
             if self.expand_whitespace:
                 config += self._expand(node)
             return config
 
-        config: Configuration = Configuration.empty(self.input)
+        config: Configuration = []
         for child in node.children:
             if child.exists:
                 config += self._unparse(child)
@@ -123,9 +117,7 @@ class _Tree:
             if not child.exists:
                 continue
 
-            config: Configuration = Configuration(
-                self.input, range(child.start, child.end)
-            )
+            config: Configuration = self.config[child.start : child.end]
             if self.expand_whitespace:
                 config += self._expand(child)
             configs.append(config)
@@ -172,13 +164,19 @@ class _Tree:
             config: Configuration to use for pruning.
 
         """
-        index: int = 0
+        if self.expand_whitespace:
+            contents: list[bytes] = [bytes(c).strip() for c in config]
+        else:
+            contents = [bytes(c) for c in config]
         for child in node.children:
             if not child.exists:
                 continue
-            if index not in config:
+            if self.expand_whitespace:
+                content: bytes = bytes(self.config[child.start : child.end]).strip()
+            else:
+                content = bytes(self.config[child.start : child.end])
+            if content not in contents:
                 child.exists = False
-            index += 1
 
 
 class HDD(Algorithm):
@@ -218,15 +216,11 @@ class HDD(Algorithm):
 
     def _oracle(
         self,
-        input: Input,
-        configs: list[Configuration],
         oracle: Callable[[Configuration], Outcome],
     ) -> Callable[[Configuration], Outcome]:
-        """Wrap the oracle function to map configurations back to the original input.
+        """Wrap the oracle function to convert configurations of lists to flat configurations.
 
         Args:
-            input: Input to use for mapping.
-            configs: List of configurations to map.
             oracle: Oracle function to wrap.
 
         Returns:
@@ -235,25 +229,25 @@ class HDD(Algorithm):
         """
 
         def _wrapper(config: Configuration) -> Outcome:
-            """Wrap the oracle function.
+            """Convert configurations of lists to flat configurations.
 
             Args:
-                config (Configuration): Configuration to map.
+                config (Configuration): Configuration to convert.
 
             Returns:
                 Outcome: Result of the oracle function.
 
             """
-            mapped_config: Configuration = Configuration.empty(input)
+            conf: Configuration = []
             for c in config:
-                mapped_config += configs[c]
-            return oracle(mapped_config)
+                conf += c
+            return oracle(conf)
 
         return _wrapper
 
     def run(
         self,
-        input: Input,
+        config: Configuration,
         oracle: Callable[[Configuration], Outcome],
         *,
         cache: Cache | None = None,
@@ -261,7 +255,7 @@ class HDD(Algorithm):
         """Run the HDD algorithm.
 
         Args:
-            input: Input to reduce.
+            config: Configuration to reduce.
             oracle: The oracle function.
             cache: Cache for storing test outcomes.
 
@@ -270,8 +264,8 @@ class HDD(Algorithm):
 
         """
         logger.debug("Starting HDD algorithm")
-        root: Node = self.parser.parse(input)
-        tree: _Tree = _Tree(root, input, self.parser.expand_whitespace)
+        root: Node = self.parser.parse(config)
+        tree: _Tree = _Tree(root, config, self.parser.expand_whitespace)
 
         level: int = 0
         while True:
@@ -282,23 +276,24 @@ class HDD(Algorithm):
             for node in nodes:
                 configs: list[Configuration] = tree.subsets(node)
 
-                if len(configs) < 2:
+                if len(configs) <= 1:
                     continue
 
                 if cache is not None:
                     cache.clear()
 
                 c: Configuration = self.algorithm.run(
-                    Input(configs), self._oracle(input, configs, oracle), cache=cache
+                    configs, self._oracle(oracle), cache=cache
                 )
                 logger.debug(
-                    f"Testing node at level {level} with {len(configs)} subsets: {configs} => {c}"
+                    f"Testing node at level {level} with {len(configs)} subsets: "
+                    f"{configs} => {c}"
                 )
                 tree.prune(node, c)
                 logger.debug(f"Pruned tree at level {level}: {tree.unparse()}")
 
             level += 1
 
-        config: Configuration = tree.unparse()
+        config = tree.unparse()
         logger.debug(f"HDD algorithm completed with reduced configuration: {config}")
         return config

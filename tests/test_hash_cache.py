@@ -1,16 +1,15 @@
 import doctest
 
-from delta_debugging import Configuration, HashCache, Input, Outcome
+from delta_debugging import Configuration, HashCache, Outcome
 
 
 def test_hash() -> None:
     cache: HashCache = HashCache()
-    input: Input = Input([1, 2, 3])
-    config1: Configuration = Configuration.from_input(input)
+    config1: Configuration = [1, 2, 3]
     cache[config1] = Outcome.FAIL
     assert cache[config1] == Outcome.FAIL
     assert config1 in cache
-    config2: Configuration = Configuration(input, [0])
+    config2: Configuration = [0]
     assert config2 not in cache
     cache[config2] = Outcome.PASS
     assert config2 in cache

@@ -10,11 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fixed file handling in `FileDebugger`.
-- Updated `Benchmark` class to use `FileDebugger`.
-- Optimized the `Configuration` class.
-- Updated `ZipMin` class for better performance.
+- Refactored `Configuration` to improve performance.
 - Updated `install.sh`.
-- Updated examples to match new API.
+- Fixed linting and formatting issues.
+
+### Removed
+
+- Removed `Input` class.
 
 ## [0.1.0] - 2025-10-11
 

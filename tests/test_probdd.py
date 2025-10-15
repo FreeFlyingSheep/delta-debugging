@@ -1,27 +1,24 @@
 import doctest
-from typing import Any, Sequence
 
-from delta_debugging import Configuration, Debugger, Input, Outcome, ProbDD
+from delta_debugging import Configuration, Debugger, Outcome, ProbDD
 
 
 def oracle(config: Configuration) -> Outcome:
-    data: Sequence[Any] = config.data
     outcome: Outcome = Outcome.PASS
-    if 3 not in data or 5 not in data or 7 not in data:
+    if 3 not in config or 5 not in config or 7 not in config:
         outcome = Outcome.UNRESOLVED
-    elif 13 in data and 15 in data and 17 in data:
+    elif 13 in config and 15 in config and 17 in config:
         outcome = Outcome.FAIL
-    print(data, outcome)
+    print(config, outcome)
     return outcome
 
 
 def test_probdd() -> None:
-    input: Input = Input(list(range(20)))
     debugger: Debugger = Debugger(ProbDD(), oracle)
-    debugger.debug(input)
+    debugger.debug(list(range(20)))
     print(debugger.to_string())
     print(debugger.result)
-    assert debugger.result == Configuration(input, [3, 5, 7, 13, 15, 17])
+    assert debugger.result == [3, 5, 7, 13, 15, 17]
 
 
 def test_docstring() -> None:

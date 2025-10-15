@@ -1,5 +1,5 @@
 import doctest
-from delta_debugging import Input, KaitaiStructParser, Node
+from delta_debugging import KaitaiStructParser, Node
 
 
 def test_elf() -> None:
@@ -16,8 +16,7 @@ def test_elf() -> None:
         b"\x20\x57\x6f\x72\x6c\x64\x21\x0a"
     )
     parser: KaitaiStructParser = KaitaiStructParser("ELF")
-    input: Input = Input(elf)
-    root: Node = parser.parse(input)
+    root: Node = parser.parse(list(elf))
     print(root.to_string())
     assert root.name == "ELF"
     assert root.start == 0

@@ -6,7 +6,6 @@ from typing import Callable, Generator
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -53,7 +52,7 @@ class DDMin(Algorithm):
 
     def run(
         self,
-        input: Input,
+        config: Configuration,
         oracle: Callable[[Configuration], Outcome],
         *,
         cache: Cache | None = None,
@@ -61,7 +60,7 @@ class DDMin(Algorithm):
         """Run the ddmin algorithm.
 
         Args:
-            input: Input to reduce.
+            config: Configuration to reduce.
             oracle: The oracle function.
             cache: Cache for storing test outcomes.
 
@@ -70,16 +69,16 @@ class DDMin(Algorithm):
 
         """
         logger.debug("Starting ddmin algorithm")
-        config: Configuration = Configuration.from_input(input)
         granularity: int = 2
 
-        while len(config) >= 2:
+        while len(config) > 1:
             reducible: bool = False
 
             for complement in self._complements(config, granularity):
                 outcome: Outcome = self._test(oracle, complement, cache=cache)
                 logger.debug(
-                    f"Testing complement with granularity {granularity}: {complement} => {outcome}"
+                    f"Testing complement with granularity {granularity}: "
+                    f"{complement} => {outcome}"
                 )
                 if outcome == Outcome.FAIL:
                     config = complement

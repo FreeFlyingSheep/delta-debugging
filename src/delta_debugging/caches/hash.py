@@ -1,11 +1,10 @@
 """Hash-based cache for delta debugging."""
 
 import logging
-from typing import Generator
+from typing import Any, Generator
 
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -16,10 +15,9 @@ class HashCache(Cache):
     """Hash-based cache.
 
     Examples:
-        >>> from delta_debugging import Configuration, HashCache, Input, Outcome
+        >>> from delta_debugging import Configuration, HashCache, Outcome
         >>> cache = HashCache()
-        >>> input = Input([1, 2, 3])
-        >>> config = Configuration.from_input(input)
+        >>> config = [1, 2, 3]
         >>> cache[config] = Outcome.FAIL
         >>> cache[config]
         <Outcome.FAIL: 'fail'>
@@ -30,14 +28,12 @@ class HashCache(Cache):
 
     """
 
-    _data: dict[Configuration, Outcome]
+    _data: dict[tuple[Any], Outcome]
     """Cache data."""
-    _input: Input | None
 
     def __init__(self) -> None:
         """Initialize the hash-based cache."""
         self._data = {}
-        self._input = None
 
     def __str__(self) -> str:
         """Get a string representation of the cache."""
@@ -54,19 +50,14 @@ class HashCache(Cache):
 
         Raises:
             KeyError: If the configuration is not in the cache.
-            ValueError: If the configuration input does not match cache input.
 
         """
         logger.debug(f"Cache lookup for configuration: {key}")
 
-        if self._input is None:
+        tuple_key: tuple[Any] = tuple(key)
+        if tuple_key not in self._data:
             raise KeyError(f"{key} not found")
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
-
-        if key not in self._data:
-            raise KeyError(f"{key} not found")
-        return self._data[key]
+        return self._data[tuple_key]
 
     def __setitem__(self, key: Configuration, value: Outcome) -> None:
         """Set the cached outcome for the given configuration.
@@ -75,18 +66,10 @@ class HashCache(Cache):
             key: Configuration to cache.
             value: Outcome to cache.
 
-        Raises:
-            ValueError: If the configuration input does not match cache input.
-
         """
         logger.debug(f"Caching outcome {value} for configuration: {key}")
 
-        if self._input is None:
-            self._input = key.input
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
-
-        self._data[key] = value
+        self._data[tuple(key)] = value
 
     def __contains__(self, key: object) -> bool:
         """Check if the configuration is in the cache.
@@ -97,18 +80,13 @@ class HashCache(Cache):
         Returns:
             True if the configuration is in the cache, False otherwise.
 
-        Raises:
-            ValueError: If the configuration input does not match cache input.
-
         """
         logger.debug(f"Cache contains check for configuration: {key}")
 
-        if not isinstance(key, Configuration) or self._input is None:
+        if not isinstance(key, list):
             return False
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
 
-        return key in self._data
+        return tuple(key) in self._data
 
     def __delitem__(self, key: object) -> None:
         """Delete the cached outcome for the given configuration.
@@ -118,23 +96,21 @@ class HashCache(Cache):
 
         Raises:
             KeyError: If the configuration is not in the cache.
-            ValueError: If the configuration input does not match cache input.
 
         """
         logger.debug(f"Deleting cache entry for configuration: {key}")
 
-        if not isinstance(key, Configuration) or self._input is None:
+        if not isinstance(key, list):
             raise KeyError(f"{key} not found")
-        elif self._input != key.input:
-            raise ValueError("Configuration input does not match cache input")
 
-        if key not in self._data:
-            raise KeyError(f"{key} not found")
-        del self._data[key]
+        tuple_key: tuple[Any] = tuple(key)
+        if tuple_key not in self._data:
+            raise KeyError(f"{tuple_key} not found")
+        del self._data[tuple_key]
 
     def __iter__(self) -> Generator[Configuration, None, None]:
         """Iterate over the configurations in the cache."""
-        yield from self._data.keys()
+        yield from [list(key) for key in self._data.keys()]
 
     def __len__(self) -> int:
         """Get the number of configurations in the cache."""
@@ -144,7 +120,6 @@ class HashCache(Cache):
         """Clear the cache."""
         logger.debug("Clearing cache")
 
-        self._input = None
         self._data.clear()
 
     def to_string(self) -> str:

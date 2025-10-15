@@ -5,7 +5,7 @@ from io import BytesIO
 
 from kaitaistruct import KaitaiStream
 
-from delta_debugging.input import Input
+from delta_debugging.configuration import Configuration
 from delta_debugging.parser import Node
 from delta_debugging.parsers.kaitai_struct_compiled.elf import Elf
 
@@ -177,11 +177,11 @@ def _parse_sht(elf: Elf, root: Node) -> None:
             node.children.append(child)
 
 
-def parse_elf(input: Input) -> Node:
+def parse_elf(config: Configuration) -> Node:
     """Parse an ELF file and return its tree representation.
 
     Args:
-        input: Input representing the ELF file.
+        config: Configuration representing the ELF file.
 
     Returns:
         Root node of the tree representation.
@@ -189,9 +189,9 @@ def parse_elf(input: Input) -> Node:
     """
     logger.debug("Parsing ELF file")
 
-    elf: Elf = Elf(KaitaiStream(BytesIO(input.data_type(input.data))))
+    elf: Elf = Elf(KaitaiStream(BytesIO(bytes(config))))
 
-    root: Node = Node("ELF", 0, len(input), 0)
+    root: Node = Node("ELF", 0, len(config), 0)
 
     _parse_header(elf, root)
     _parse_pht(elf, root)

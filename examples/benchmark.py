@@ -1,11 +1,8 @@
-from typing import Any, Sequence
-
 from delta_debugging import (
     Benchmark,
     Configuration,
     DDMin,
     Debugger,
-    Input,
     Outcome,
     TestCase,
     ZipMin,
@@ -13,19 +10,17 @@ from delta_debugging import (
 
 
 def oracle(config: Configuration) -> Outcome:
-    data: Sequence[Any] = config.data
     outcome: Outcome = Outcome.PASS
-    if 5 not in data:
+    if 5 not in config:
         outcome = Outcome.UNRESOLVED
-    elif 3 in data and 7 in data:
+    elif 3 in config and 7 in config:
         outcome = Outcome.FAIL
     return outcome
 
 
 def main() -> None:
-    input: Input = Input(list(range(10)))
     test_case: TestCase = TestCase(
-        input,
+        list(range(10)),
         [DDMin(), ZipMin()],
         [None],
         Debugger,

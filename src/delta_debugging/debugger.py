@@ -11,7 +11,6 @@ from tqdm.contrib.logging import logging_redirect_tqdm
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
 from delta_debugging.configuration import Configuration
-from delta_debugging.input import Input
 from delta_debugging.outcome import Outcome
 
 
@@ -31,8 +30,8 @@ class Debugger:
     """Counter for the number of tests per outcome."""
     time: float
     """Total time (in seconds) taken for debugging."""
-    input: Input
-    """Input to be reduced."""
+    config: Configuration
+    """Configuration to be reduced."""
     result: Configuration
     """Resulting reduced configuration."""
     _pbar: tqdm | None
@@ -60,8 +59,8 @@ class Debugger:
         self.oracle = oracle
         self.counters = Counter()
         self.time = 0.0
-        self.input = Input([])
-        self.result = Configuration.empty(self.input)
+        self.config = []
+        self.result = []
         self._pbar = None
 
     @classmethod
@@ -106,24 +105,26 @@ class Debugger:
 
         return outcome
 
-    def validate(self, input: Input) -> bool:
-        """Validate if the given input triggers the bug.
+    def validate(self, config: Configuration) -> bool:
+        """Validate if the given configuration triggers the bug.
 
         Args:
-            input: Input to validate.
+            config: Configuration to validate.
 
         Returns:
-            True if the input triggers the bug, False otherwise.
+            True if the configuration triggers the bug, False otherwise.
 
         """
-        outcome: Outcome = self.oracle(Configuration.from_input(input))
+        outcome: Outcome = self.oracle(config)
         return outcome == Outcome.FAIL
 
-    def debug(self, input: Input, *, show_process: bool = False) -> Configuration:
-        """Run the debugger on the given input, showing the process if specified.
+    def debug(
+        self, config: Configuration, *, show_process: bool = False
+    ) -> Configuration:
+        """Run the debugger on the given configuration, showing the process if specified.
 
         Args:
-            input: Input to be reduced.
+            config: Configuration to be reduced.
             show_process: Whether to show the debugging process.
 
         Returns:
@@ -139,9 +140,9 @@ class Debugger:
                     dynamic_ncols=True,
                 )
 
-            self.input = input
+            self.config = list(config)
             start_time: float = time.time()
-            self.result = self.algorithm.run(input, self._oracle, cache=self.cache)
+            self.result = self.algorithm.run(config, self._oracle, cache=self.cache)
             self.time = time.time() - start_time
 
             if self._pbar is not None:
@@ -154,10 +155,12 @@ class Debugger:
         """Get a string representation of the debugger."""
         output: list[str] = [f"Delta debugging using {self.algorithm}"]
         output.append(
-            f"Reduced input length from {len(self.input)} to {len(self.result)}"
+            f"Reduced configuration length "
+            f"from {len(self.config)} to {len(self.result)}"
         )
         output.append(
-            f"Reduced ratio: {(len(self.input) - len(self.result)) / len(self.input):.2%}"
+            f"Reduced ratio: "
+            f"{(len(self.config) - len(self.result)) / len(self.config):.2%}"
         )
         output.append(f"Total time: {self.time:.2f} seconds")
         return "\n".join(output)

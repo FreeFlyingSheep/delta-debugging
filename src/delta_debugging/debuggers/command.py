@@ -74,7 +74,7 @@ class CommandDebugger(Debugger):
         self.timeout_handler: Callable[[Configuration, list[str]], Outcome] | None = (
             timeout_handler
         )
-        self._command: list[str] = command[:]
+        self._command: list[str] = list(command)
 
     def _check(self, config: Configuration) -> Outcome:
         """Check the outcome of the command with the given configuration.
@@ -96,6 +96,7 @@ class CommandDebugger(Debugger):
         try:
             result: CompletedProcess[bytes] = subprocess.run(
                 " ".join(self.command),
+                check=False,
                 capture_output=True,
                 shell=True,
                 timeout=self.timeout,
@@ -103,7 +104,8 @@ class CommandDebugger(Debugger):
         except TimeoutExpired:
             if self.timeout_handler is not None:
                 logger.debug(
-                    f"Running timeout_handler for configuration {config} with command {self.command}"
+                    f"Running timeout_handler for configuration {config} "
+                    f"with command {self.command}"
                 )
                 outcome: Outcome = self.timeout_handler(config, self.command)
                 logger.debug(f"Outcome from timeout_handler: {outcome}")
@@ -113,10 +115,11 @@ class CommandDebugger(Debugger):
         outcome: Outcome = self.check(result)
         if self.post_check is not None:
             logger.debug(
-                f"Running post_check for configuration {config} with command {self.command}"
+                f"Running post_check for configuration {config} "
+                f"with command {self.command}"
             )
             self.post_check(config, self.command)
             logger.debug(f"Outcome from post_check: {outcome}")
 
-        self.command = self._command[:]
+        self.command = list(self._command)
         return outcome

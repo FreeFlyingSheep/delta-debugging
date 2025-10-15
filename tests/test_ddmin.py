@@ -1,27 +1,24 @@
 import doctest
-from typing import Any, Sequence
 
-from delta_debugging import Configuration, Debugger, DDMin, Input, Outcome
+from delta_debugging import Configuration, Debugger, DDMin, Outcome
 
 
 def oracle(config: Configuration) -> Outcome:
-    data: Sequence[Any] = config.data
     outcome: Outcome = Outcome.PASS
-    if 5 not in data:
+    if 5 not in config:
         outcome = Outcome.UNRESOLVED
-    elif 3 in data and 7 in data:
+    elif 3 in config and 7 in config:
         outcome = Outcome.FAIL
-    print(data, outcome)
+    print(config, outcome)
     return outcome
 
 
 def test_ddmin() -> None:
-    input: Input = Input(list(range(10)))
     debugger: Debugger = Debugger(DDMin(), oracle)
-    debugger.debug(input)
+    debugger.debug(list(range(10)))
     print(debugger.to_string())
     print(debugger.result)
-    assert debugger.result == Configuration(input, [3, 5, 7])
+    assert debugger.result == [3, 5, 7]
 
 
 def test_docstring() -> None:
