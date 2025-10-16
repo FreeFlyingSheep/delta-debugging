@@ -1,7 +1,7 @@
 """ddmin delta debugging algorithm."""
 
 import logging
-from typing import Callable, Generator
+from typing import Callable
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
@@ -31,24 +31,36 @@ class DDMin(Algorithm):
         """
         return "ddmin"
 
-    def _complements(
-        self, config: Configuration, granularity: int
-    ) -> Generator[Configuration, None, None]:
-        """Generate complementary configurations by dividing the configuration into `granularity` parts and removing each part in turn.
+    def _remove_check_each_fragment(
+        self,
+        config: Configuration,
+        num: int,
+        oracle: Callable[[Configuration], Outcome],
+        *,
+        cache: Cache | None = None,
+    ) -> Configuration:
+        """Remove and check each fragment of the configuration.
 
         Args:
-            config: The original configuration.
-            granularity: The level of granularity for the complements.
+            config: The current configuration.
+            num: Number of fragments.
+            oracle: The oracle function.
+            cache: Cache for storing test outcomes.
 
-        Yields:
-            A generator of complementary configurations.
+        Returns:
+            The updated configuration after removing fragments that do not affect the failure.
 
         """
-        start: int = 0
-        for i in range(granularity):
-            end: int = start + (len(config) - start) // (granularity - i)
-            yield config[:start] + config[end:]
-            start: int = end
+        pre: Configuration = []
+        for i in range(0, len(config), num):
+            removed, remaining = config[i : i + num], config[i + num :]
+            outcome: Outcome = self._test(oracle, pre + remaining, cache=cache)
+            logger.debug(
+                f"Testing configuration by removing fragments: {config} => {outcome}"
+            )
+            if outcome != Outcome.FAIL:
+                pre += removed
+        return pre
 
     def run(
         self,
@@ -69,30 +81,14 @@ class DDMin(Algorithm):
 
         """
         logger.debug("Starting ddmin algorithm")
-        granularity: int = 2
-
-        while len(config) > 1:
-            reducible: bool = False
-
-            for complement in self._complements(config, granularity):
-                outcome: Outcome = self._test(oracle, complement, cache=cache)
-                logger.debug(
-                    f"Testing complement with granularity {granularity}: "
-                    f"{complement} => {outcome}"
-                )
-                if outcome == Outcome.FAIL:
-                    config = complement
-                    granularity = max(granularity - 1, 2)
-                    reducible = True
-                    break
-
-            if reducible:
-                continue
-
-            if granularity < len(config):
-                granularity = min(granularity * 2, len(config))
-            else:
-                break
+        num: int = len(config) // 2
+        while num and config:
+            reduced: Configuration = self._remove_check_each_fragment(
+                config, num, oracle, cache=cache
+            )
+            if reduced == config:
+                num = num // 2
+            config = reduced
 
         logger.debug(f"ddmin algorithm completed with reduced configuration: {config}")
         return config
