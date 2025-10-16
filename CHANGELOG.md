@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored `Configuration` to improve performance.
 - Updated `install.sh`.
 - Fixed linting and formatting issues.
+- Updated dependencies and folder structure.
 
 ### Removed
 

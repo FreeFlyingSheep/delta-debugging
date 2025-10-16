@@ -1,9 +1,11 @@
 """Benchmark for delta debugging algorithms."""
 
+from calendar import c
 import itertools
 import json
 import logging
 import os
+from collections import Counter
 from dataclasses import dataclass
 from subprocess import CompletedProcess
 from typing import Any, Callable, Generator, Self
@@ -210,19 +212,15 @@ class TestCase:
             executable=executable,
         )
 
-    def validate(self) -> bool:
+    def iter_validate(self) -> Generator[bool, None, None]:
         """Validate the input for all debuggers.
 
-        Returns:
+        Yields:
             True if the input triggers the bug, False otherwise.
 
         """
-        triggered: bool = True
         for debugger in self.debuggers:
-            if not debugger.validate(self.config):
-                triggered = False
-                break
-        return triggered
+            yield debugger.validate(self.config)
 
     def iter_run(self, *, show_process: bool = False) -> Generator[Result, None, None]:
         """Run the test case and yield results for each debugger.
@@ -282,16 +280,40 @@ class Benchmark:
         self.file = file
         self.results = []
 
-    def validate(self) -> list[bool]:
+    def validate(self, show_process: bool = False) -> list[bool]:
         """Validate the input for each test case.
+
+        Args:
+            show_process: Whether to show the validation process.
 
         Returns:
             List of validation results. True if the input triggers the bug, False otherwise.
 
         """
+        pbar: tqdm | None = None
+        total: int = sum(len(test_case.debuggers) for test_case in self.test_cases)
+        with logging_redirect_tqdm(loggers=[logger]):
+            if show_process:
+                pbar = tqdm(
+                    total=total,
+                    desc="Validating",
+                    unit="test cases",
+                )
+
         results: list[bool] = []
+        counter: Counter[bool] = Counter()
         for test_case in self.test_cases:
-            results.append(test_case.validate())
+            for result in test_case.iter_validate():
+                counter[result] += 1
+                if pbar is not None:
+                    pbar.update(1)
+                    pbar.set_postfix(
+                        {str(triggered): count for triggered, count in counter.items()}
+                    )
+
+        if pbar is not None:
+            pbar.close()
+
         return results
 
     def run(self, *, show_process: bool = False) -> list[Result]:
@@ -333,6 +355,10 @@ class Benchmark:
 
                 if pbar is not None:
                     pbar.update(1)
+
+        if pbar is not None:
+            pbar.close()
+
         logger.debug("Benchmark completed")
         return self.results
 

@@ -35,7 +35,8 @@ def main() -> None:
 
     test_cases: list[TestCase] = []
 
-    with open("examples/valgrind_bugs/bugs.json", "r") as f:
+    prefix: str = os.path.join("examples", "bugs", "valgrind")
+    with open(os.path.join(prefix, "bugs.json"), "r") as f:
         data: Any = json.load(f)
 
         for bug in data:
@@ -44,7 +45,7 @@ def main() -> None:
 
             test_cases.append(
                 TestCase.make_file(
-                    input_file=bug["file"],
+                    input_file=os.path.join(prefix, bug["file"]),
                     output_file=os.path.join("/tmp", os.path.basename(bug["file"])),
                     algorithms=[
                         DDMin(),
@@ -61,8 +62,8 @@ def main() -> None:
                 )
             )
 
-    benchmark: Benchmark = Benchmark(test_cases, "/tmp/results.json")
-    validates: list[bool] = benchmark.validate()
+    benchmark: Benchmark = Benchmark(test_cases, os.path.join("/tmp", "results.json"))
+    validates: list[bool] = benchmark.validate(show_process=True)
     if not all(validates):
         print(validates)
         print("Some test cases are invalid. Please check the environment.")

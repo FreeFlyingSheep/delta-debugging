@@ -1,6 +1,6 @@
 [
     {
-        "file": "examples/valgrind_bugs/bug_392146",
+        "file": "bug_392146",
         "command": [
             "/opt/valgrind-bd4db67/bin/valgrind",
             "--tool=none"
@@ -11,7 +11,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_412377",
+        "file": "bug_412377",
         "command": [
             "/opt/valgrind-bd4db67/bin/valgrind",
             "--tool=none"
@@ -22,7 +22,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_460616",
+        "file": "bug_460616",
         "command": [
             "/opt/valgrind-d97fed7/bin/valgrind",
             "--tool=none"
@@ -33,7 +33,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_469782",
+        "file": "bug_469782",
         "command": [
             "/opt/valgrind-d97fed7/bin/valgrind",
             "--tool=memcheck"
@@ -44,7 +44,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_476465",
+        "file": "bug_476465",
         "command": [
             "/opt/valgrind-bd4db67/bin/valgrind",
             "--tool=none"
@@ -55,7 +55,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_489338",
+        "file": "bug_489338",
         "command": [
             "/opt/valgrind-d97fed7/bin/valgrind",
             "--tool=none"
@@ -66,7 +66,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_504466",
+        "file": "bug_504466",
         "command": [
             "/opt/valgrind-fcdaa47/bin/valgrind",
             "--tool=none",
@@ -78,7 +78,7 @@
         "skip": false
     },
     {
-        "file": "examples/valgrind_bugs/bug_508154",
+        "file": "bug_508154",
         "command": [
             "/opt/valgrind-49dccaf/bin/valgrind",
             "--tool=memcheck"
