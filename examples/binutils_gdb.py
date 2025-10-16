@@ -1,9 +1,10 @@
 import json
+import logging
 import os
 from subprocess import CompletedProcess
 from typing import Any, Callable
 
-from delta_debugging import Benchmark, DDMin, Outcome, TestCase, ZipMin
+from delta_debugging import Benchmark, DDMin, Outcome, ProbDD, TestCase, ZipMin
 
 
 def check(error: str) -> Callable[[CompletedProcess], Outcome]:
@@ -16,6 +17,8 @@ def check(error: str) -> Callable[[CompletedProcess], Outcome]:
 
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO)
+
     test_cases: list[TestCase] = []
 
     with open("examples/binutils_gdb_bugs/bugs.json", "r") as f:
@@ -28,7 +31,7 @@ def main() -> None:
                 TestCase.make_file(
                     input_file=bug["file"],
                     output_file=os.path.join("/tmp", os.path.basename(bug["file"])),
-                    algorithms=[DDMin(), ZipMin()],
+                    algorithms=[DDMin(), ZipMin(), ProbDD()],
                     command=bug["command"],
                     check=check(bug["error"]),
                     caches=[None],

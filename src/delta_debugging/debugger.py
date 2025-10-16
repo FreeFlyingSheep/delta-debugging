@@ -131,7 +131,7 @@ class Debugger:
             The reduced configuration.
 
         """
-        with logging_redirect_tqdm():
+        with logging_redirect_tqdm(loggers=[logger]):
             if show_process:
                 self._pbar = tqdm(
                     total=None,
@@ -154,6 +154,11 @@ class Debugger:
     def to_string(self) -> str:
         """Get a string representation of the debugger."""
         output: list[str] = [f"Delta debugging using {self.algorithm}"]
+
+        if len(self.config) == 0:
+            output.append("Debugger has not been run yet.")
+            return "\n".join(output)
+
         output.append(
             f"Reduced configuration length "
             f"from {len(self.config)} to {len(self.result)}"

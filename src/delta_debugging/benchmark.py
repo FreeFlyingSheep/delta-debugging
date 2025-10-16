@@ -9,6 +9,8 @@ from subprocess import CompletedProcess
 from typing import Any, Callable, Generator, Self
 
 from tabulate import tabulate
+from tqdm import tqdm
+from tqdm.contrib.logging import logging_redirect_tqdm
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
@@ -232,13 +234,11 @@ class TestCase:
             Result of each benchmark run.
 
         """
-        test_id: int = 0
         for debugger in self.debuggers:
             logger.debug(f"Running debugger with algorithm: {debugger.algorithm}")
             config: Configuration = debugger.debug(
                 self.config, show_process=show_process
             )
-            test_id += 1
 
             file: str = "None"
             if isinstance(debugger, FileDebugger):
@@ -306,10 +306,23 @@ class Benchmark:
         """
         logger.debug("Starting benchmark")
         results: list[dict[str, float | int | str]] = []
+        total: int = sum(len(test_case.debuggers) for test_case in self.test_cases)
+        pbar: tqdm | None = None
+        with logging_redirect_tqdm(loggers=[logger]):
+            if show_process:
+                pbar: tqdm | None = tqdm(
+                    total=total, desc="Benchmarking", unit="test cases"
+                )
         for test_case in self.test_cases:
             for result in test_case.iter_run(show_process=show_process):
                 self.results.append(result)
                 results.append(result.to_json())
+
+                logger.info(f"Current Results {len(self.results)}/{total}:")
+                messages: list[str] = self.to_string().splitlines()
+                for message in messages:
+                    logger.info(message)
+
                 if self.file is not None:
                     with open(self.file, "w") as f:
                         try:
@@ -317,6 +330,9 @@ class Benchmark:
                         except Exception:
                             logger.exception("Error writing benchmark results to file")
                             return self.results
+
+                if pbar is not None:
+                    pbar.update(1)
         logger.debug("Benchmark completed")
         return self.results
 

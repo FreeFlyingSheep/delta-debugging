@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from subprocess import CompletedProcess
 from typing import Any, Callable
@@ -30,6 +31,8 @@ def check(bug: dict[str, Any]) -> Callable[[CompletedProcess], Outcome]:
 
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO)
+
     test_cases: list[TestCase] = []
 
     with open("examples/valgrind_bugs/bugs.json", "r") as f:
