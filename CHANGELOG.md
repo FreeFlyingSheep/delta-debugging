@@ -7,12 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-10-16
+
 ### Changed
 
 - Fixed file handling in `FileDebugger`.
+- Fixed linting and formatting issues.
 - Refactored `Configuration` to improve performance.
 - Updated `install.sh`.
-- Fixed linting and formatting issues.
 - Updated dependencies and folder structure.
 
 ### Removed
@@ -27,5 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Examples for using the framework.
 - API documentation.
 
-[unreleased]: https://github.com/FreeFlyingSheep/delta-debugging/tree/main
+[unreleased]: https://github.com/FreeFlyingSheep/delta-debugging/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/FreeFlyingSheep/delta-debugging/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/FreeFlyingSheep/delta-debugging/releases/tag/v0.1.0

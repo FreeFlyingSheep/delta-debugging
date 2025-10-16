@@ -1,6 +1,5 @@
 """Benchmark for delta debugging algorithms."""
 
-from calendar import c
 import itertools
 import json
 import logging
