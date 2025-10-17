@@ -2,7 +2,7 @@
     {
         "file": "bug_392146",
         "command": [
-            "/opt/valgrind-bd4db67/bin/valgrind",
+            "/opt/valgrind-bd4db67b/bin/valgrind",
             "--tool=none"
         ],
         "stderr": "unhandled instruction 0xD5380400",
@@ -13,7 +13,7 @@
     {
         "file": "bug_412377",
         "command": [
-            "/opt/valgrind-bd4db67/bin/valgrind",
+            "/opt/valgrind-bd4db67b/bin/valgrind",
             "--tool=none"
         ],
         "stderr": "unhandled instruction 0xD50B7A20",
@@ -24,7 +24,7 @@
     {
         "file": "bug_460616",
         "command": [
-            "/opt/valgrind-d97fed7/bin/valgrind",
+            "/opt/valgrind-d97fed7c/bin/valgrind",
             "--tool=none"
         ],
         "stderr": "unhandled instruction 0x4E819402",
@@ -35,7 +35,7 @@
     {
         "file": "bug_469782",
         "command": [
-            "/opt/valgrind-d97fed7/bin/valgrind",
+            "/opt/valgrind-d97fed7c/bin/valgrind",
             "--tool=memcheck"
         ],
         "stderr": "WARNING: Serious error when reading debug info",
@@ -46,7 +46,7 @@
     {
         "file": "bug_476465",
         "command": [
-            "/opt/valgrind-bd4db67/bin/valgrind",
+            "/opt/valgrind-bd4db67b/bin/valgrind",
             "--tool=none"
         ],
         "stderr": "unhandled instruction 0xF8BFC261",
@@ -57,7 +57,7 @@
     {
         "file": "bug_489338",
         "command": [
-            "/opt/valgrind-d97fed7/bin/valgrind",
+            "/opt/valgrind-d97fed7c/bin/valgrind",
             "--tool=none"
         ],
         "stdout": "-322",
@@ -68,7 +68,7 @@
     {
         "file": "bug_504466",
         "command": [
-            "/opt/valgrind-fcdaa47/bin/valgrind",
+            "/opt/valgrind-fcdaa474/bin/valgrind",
             "--tool=none",
             "--track-fds=yes"
         ],
@@ -80,7 +80,7 @@
     {
         "file": "bug_508154",
         "command": [
-            "/opt/valgrind-49dccaf/bin/valgrind",
+            "/opt/valgrind-49dccafc/bin/valgrind",
             "--tool=memcheck"
         ],
         "stderr": "Warning: invalid file descriptor -100 in syscall fchownat()",

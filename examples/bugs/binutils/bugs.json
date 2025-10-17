@@ -2,7 +2,7 @@
     {
         "file": "bug_20605",
         "command": [
-            "/opt/binutils-2870b1b/bin/x86_64-mingw32-objdump",
+            "/opt/binutils-2870b1ba/bin/x86_64-mingw32-objdump",
             "-x"
         ],
         "error": "Segmentation fault",
@@ -13,7 +13,7 @@
     {
         "file": "bug_21135",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-zR3"
         ],
         "error": "Segmentation fault",
@@ -24,7 +24,7 @@
     {
         "file": "bug_21136",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-da"
         ],
         "error": "Segmentation fault",
@@ -35,7 +35,7 @@
     {
         "file": "bug_21138",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-R6"
         ],
         "error": "Segmentation fault",
@@ -46,7 +46,7 @@
     {
         "file": "bug_21139",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-w"
         ],
         "error": "malloc(): corrupted top size",
@@ -57,7 +57,7 @@
     {
         "file": "bug_21143",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-R6"
         ],
         "error": "Segmentation fault",
@@ -68,7 +68,7 @@
     {
         "file": "bug_21144",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-w"
         ],
         "error": "Segmentation fault",
@@ -79,7 +79,7 @@
     {
         "file": "bug_21145",
         "command": [
-            "/opt/binutils-53f7e8e/bin/readelf",
+            "/opt/binutils-53f7e8ea/bin/aarch64-linux-readelf",
             "-w"
         ],
         "error": "Segmentation fault",
@@ -90,7 +90,7 @@
     {
         "file": "bug_21409",
         "command": [
-            "/opt/binutils-a6c21d4/bin/x86_64-linux-objdump",
+            "/opt/binutils-a6c21d4a/bin/x86_64-linux-objdump",
             "-SD"
         ],
         "error": "Segmentation fault",
@@ -101,7 +101,7 @@
     {
         "file": "bug_21409_2",
         "command": [
-            "/opt/binutils-a6c21d4/bin/x86_64-linux-objdump",
+            "/opt/binutils-a6c21d4a/bin/x86_64-linux-objdump",
             "-SD"
         ],
         "error": "Segmentation fault",
@@ -112,7 +112,7 @@
     {
         "file": "bug_21414",
         "command": [
-            "/opt/binutils-a6c21d4/bin/x86_64-linux-objcopy",
+            "/opt/binutils-a6c21d4a/bin/x86_64-linux-objcopy",
             "-Gs"
         ],
         "error": "Segmentation fault",
@@ -123,7 +123,7 @@
     {
         "file": "bug_30886",
         "command": [
-            "/opt/binutils-be8e831/bin/x86_64-linux-nm",
+            "/opt/binutils-be8e8313/bin/x86_64-linux-nm",
             "-D"
         ],
         "error": "Segmentation fault",
