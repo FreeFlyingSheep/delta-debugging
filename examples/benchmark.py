@@ -10,17 +10,16 @@ from delta_debugging import (
 
 
 def oracle(config: Configuration) -> Outcome:
-    outcome: Outcome = Outcome.PASS
-    if 5 not in config:
-        outcome = Outcome.UNRESOLVED
-    elif 3 in config and 7 in config:
-        outcome = Outcome.FAIL
-    return outcome
+    s: str = "".join(config)
+    for i in range(10):
+        if str(i) not in s:
+            return Outcome.PASS
+    return Outcome.FAIL
 
 
 def main() -> None:
     test_case: TestCase = TestCase(
-        list(range(10)),
+        list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHI"),
         [DDMin(), ZipMin()],
         [None],
         Debugger,

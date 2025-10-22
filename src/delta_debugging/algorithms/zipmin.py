@@ -57,9 +57,11 @@ class ZipMin(Algorithm):
         outcome: Outcome = self._test(oracle, c, cache=cache)
         logger.debug(f"Testing configuration by removing last char: {c} => {outcome}")
         if outcome == Outcome.FAIL:
+            logger.debug(f"Removing last char: {config[-1]}")
             return pre, conf, post
         else:
-            return pre, conf, config[-1] + post
+            logger.debug(f"Keeping last char: {config[-1]}")
+            return pre, conf, [config[-1]] + post
 
     def _remove_check_each_fragment(
         self,
@@ -97,10 +99,12 @@ class ZipMin(Algorithm):
             )
             if outcome != Outcome.FAIL:
                 c += removed
-            else:
-                count += 1
+            count += 1
 
-        return c, max(count - (len(config) - len(c)), 0)
+        deficit: int = max(count - (len(config) - len(c)), 0)
+        logger.debug(f"Deficit after fragment removal: {deficit}")
+
+        return c, deficit
 
     def run(
         self,
@@ -128,10 +132,9 @@ class ZipMin(Algorithm):
         post: Configuration = []
 
         while length > 0 and len(config) > 0:
-            c: Configuration = []
-            if count % 2:
+            if count % 2 != 0:
                 for _ in range(deficit):
-                    pre, c, post = self._remove_last_char(
+                    pre, config, post = self._remove_last_char(
                         oracle, pre, config, post, cache=cache
                     )
                 deficit = 0
@@ -141,7 +144,8 @@ class ZipMin(Algorithm):
                 )
                 if c == config:
                     length = length // 2
-            config = c
+                config = c
+            count += 1
 
         config = pre + config + post
         logger.debug(f"ZipMin algorithm completed with reduced configuration: {config}")

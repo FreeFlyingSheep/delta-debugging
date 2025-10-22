@@ -34,7 +34,7 @@ class DDMin(Algorithm):
     def _remove_check_each_fragment(
         self,
         config: Configuration,
-        num: int,
+        length: int,
         oracle: Callable[[Configuration], Outcome],
         *,
         cache: Cache | None = None,
@@ -43,7 +43,7 @@ class DDMin(Algorithm):
 
         Args:
             config: The current configuration.
-            num: Number of fragments.
+            length: The length of fragments to remove.
             oracle: The oracle function.
             cache: Cache for storing test outcomes.
 
@@ -51,16 +51,16 @@ class DDMin(Algorithm):
             The updated configuration after removing fragments that do not affect the failure.
 
         """
-        pre: Configuration = []
-        for i in range(0, len(config), num):
-            removed, remaining = config[i : i + num], config[i + num :]
-            outcome: Outcome = self._test(oracle, pre + remaining, cache=cache)
+        c: Configuration = []
+        for i in range(0, len(config), length):
+            removed, remaining = config[i : i + length], config[i + length :]
+            outcome: Outcome = self._test(oracle, c + remaining, cache=cache)
             logger.debug(
                 f"Testing configuration by removing fragments: {config} => {outcome}"
             )
             if outcome != Outcome.FAIL:
-                pre += removed
-        return pre
+                c += removed
+        return c
 
     def run(
         self,
@@ -81,14 +81,15 @@ class DDMin(Algorithm):
 
         """
         logger.debug("Starting ddmin algorithm")
-        num: int = len(config) // 2
-        while num and config:
-            reduced: Configuration = self._remove_check_each_fragment(
-                config, num, oracle, cache=cache
+        length: int = len(config) // 2
+
+        while length > 0 and len(config) > 0:
+            c: Configuration = self._remove_check_each_fragment(
+                config, length, oracle, cache=cache
             )
-            if reduced == config:
-                num = num // 2
-            config = reduced
+            if c == config:
+                length = length // 2
+            config = c
 
         logger.debug(f"ddmin algorithm completed with reduced configuration: {config}")
         return config

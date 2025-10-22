@@ -303,11 +303,15 @@ class Benchmark:
         counter: Counter[bool] = Counter()
         for test_case in self.test_cases:
             for result in test_case.iter_validate():
+                results.append(result)
                 counter[result] += 1
                 if pbar is not None:
                     pbar.update(1)
                     pbar.set_postfix(
-                        {str(triggered): count for triggered, count in counter.items()}
+                        {
+                            str(triggered): str(count)
+                            for triggered, count in counter.items()
+                        }
                     )
 
         if pbar is not None:

@@ -1,4 +1,4 @@
-FROM arm64v8/ubuntu:plucky
+FROM arm64v8/ubuntu:plucky AS builder
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y build-essential bison flex texinfo git automake libc6-dbg
@@ -76,6 +76,8 @@ RUN cd valgrind \
     && make -j$(nproc) \
     && make install
 
+FROM builder
+
 # Copy the project
 COPY . /root/delta-debugging
 
@@ -85,9 +87,3 @@ RUN uv sync --all-extras
 
 # Run tests
 RUN uv run pytest -s -v
-
-# Uncomment the following line to run an example by default
-# CMD ["uv", "run", "examples/basic.py"]
-# CMD ["uv", "run", "examples/benchmark.py"]
-# CMD ["uv", "run", "examples/binutils_gdb.py"]
-# CMD ["uv", "run", "examples/valgrind.py"]

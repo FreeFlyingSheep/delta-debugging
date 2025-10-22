@@ -4,7 +4,7 @@ import os
 from subprocess import CompletedProcess
 from typing import Any, Callable
 
-from delta_debugging import Benchmark, DDMin, Outcome, ProbDD, TestCase, ZipMin
+from delta_debugging import Benchmark, DDMin, Outcome, TestCase, ZipMin
 
 
 def check(error: str) -> Callable[[CompletedProcess], Outcome]:
@@ -32,7 +32,7 @@ def main() -> None:
                 TestCase.make_file(
                     input_file=os.path.join(prefix, bug["file"]),
                     output_file=os.path.join("/tmp", os.path.basename(bug["file"])),
-                    algorithms=[DDMin(), ZipMin(), ProbDD()],
+                    algorithms=[DDMin(), ZipMin()],
                     command=bug["command"],
                     check=check(bug["error"]),
                     caches=[None],

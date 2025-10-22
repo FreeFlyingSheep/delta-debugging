@@ -15,7 +15,8 @@ pushd ${src_dir}
 
     # Install uv
     if uv --version >/dev/null 2>&1; then
-        echo "uv is already installed."
+        echo "Updating uv..."
+        uv self update
     else
         echo "Installing uv..."
         curl -LsSf https://astral.sh/uv/install.sh | sh

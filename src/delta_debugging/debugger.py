@@ -100,7 +100,7 @@ class Debugger:
         if self._pbar is not None:
             self._pbar.update(1)
             self._pbar.set_postfix(
-                {str(outcome): count for outcome, count in self.counters.items()}
+                {str(outcome): str(count) for outcome, count in self.counters.items()}
             )
 
         return outcome
