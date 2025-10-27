@@ -54,9 +54,10 @@ class DDMin(Algorithm):
         c: Configuration = []
         for i in range(0, len(config), length):
             removed, remaining = config[i : i + length], config[i + length :]
-            outcome: Outcome = self._test(oracle, c + remaining, cache=cache)
+            conf: Configuration = c + remaining
+            outcome: Outcome = self._test(oracle, conf, cache=cache)
             logger.debug(
-                f"Testing configuration by removing fragments: {config} => {outcome}"
+                f"Testing configuration by removing fragments: {conf} => {outcome}"
             )
             if outcome != Outcome.FAIL:
                 c += removed

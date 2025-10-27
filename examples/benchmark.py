@@ -1,3 +1,5 @@
+import logging
+
 from delta_debugging import (
     Benchmark,
     Configuration,
@@ -18,6 +20,7 @@ def oracle(config: Configuration) -> Outcome:
 
 
 def main() -> None:
+    logging.basicConfig(level=logging.DEBUG)
     test_case: TestCase = TestCase(
         list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHI"),
         [DDMin(), ZipMin()],
