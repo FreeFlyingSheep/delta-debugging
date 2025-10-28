@@ -6,6 +6,7 @@ from delta_debugging import (
     Debugger,
     HDD,
     Outcome,
+    ProbDD,
     TreeSitterParser,
 )
 
@@ -37,10 +38,16 @@ def g(x):
 z = f(x)
 print(g(z))
 """.encode("utf8")
+    expected: bytes = b"x = 1\ndef f(x):\nreturn x / 0\nz = f(x)\n"
     debugger: Debugger = Debugger(HDD(parser, DDMin()), oracle)
     result: Configuration = debugger.debug(list(source))
     print(debugger.to_string())
-    assert bytes(result) == b"x = 1\ndef f(x):\nreturn x / 0\nz = f(x)\n"
+    assert bytes(result) == expected
+
+    debugger: Debugger = Debugger(HDD(parser, ProbDD()), oracle)
+    result: Configuration = debugger.debug(list(source))
+    print(debugger.to_string())
+    assert bytes(result) == expected
 
 
 def test_docstring() -> None:

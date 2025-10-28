@@ -1,6 +1,7 @@
 """Probabilistic Delta Debugging (ProbDD) algorithm."""
 
 import logging
+from collections.abc import MutableMapping
 from typing import Any, Callable
 
 from delta_debugging.algorithm import Algorithm
@@ -10,6 +11,91 @@ from delta_debugging.outcome import Outcome
 
 
 logger: logging.Logger = logging.getLogger(__name__)
+
+
+class Probability(MutableMapping):
+    """Probability mapping for configuration elements."""
+
+    def __init__(self, *, to_tuple: bool) -> None:
+        """Initialize the Probability mapping.
+
+        Args:
+            to_tuple: Whether to convert keys to tuples.
+
+        """
+        self._data: dict[Any, float] = {}
+        self._to_tuple: bool = to_tuple
+
+    def __getitem__(self, key: Any) -> float:
+        """Get the probability for a given key.
+
+        Args:
+            key: Key to get the probability for.
+
+        Returns:
+            Probability value.
+
+        """
+        if self._to_tuple:
+            key = tuple(key)
+        return self._data[key]
+
+    def __setitem__(self, key: Any, value: float) -> None:
+        """Set the probability for a given key.
+
+        Args:
+            key: Key to set the probability for.
+            value: Probability value to set.
+
+        """
+        if self._to_tuple:
+            key = tuple(key)
+        self._data[key] = value
+
+    def __delitem__(self, key: Any) -> None:
+        """Delete the probability for a given key.
+
+        Args:
+            key: Key to delete the probability for.
+
+        """
+        if self._to_tuple:
+            key = tuple(key)
+        del self._data[key]
+
+    def __iter__(self):
+        """Iterate over the keys in the mapping.
+
+        Returns:
+            Iterator over the keys.
+
+        """
+        return iter(self._data)
+
+    def __len__(self) -> int:
+        """Get the number of items in the mapping.
+
+        Returns:
+            Number of items.
+
+        """
+        return len(self._data)
+
+    def key_list(self) -> list[Any]:
+        """Get the list of keys.
+
+        Returns:
+            List of keys.
+
+        """
+        if self._to_tuple:
+            return [list(key) for key in self._data.keys()]
+        else:
+            return list(self._data.keys())
+
+    def sort(self) -> None:
+        """Sort the mapping by values."""
+        self._data = dict(sorted(self._data.items(), key=lambda item: item[1]))
 
 
 class ProbDD(Algorithm):
@@ -31,13 +117,10 @@ class ProbDD(Algorithm):
         """
         return "ProbDD"
 
-    def _sample(
-        self, config: Configuration, probabilities: dict[int, float]
-    ) -> Configuration:
+    def _sample(self, probabilities: Probability) -> Configuration:
         """Sample a configuration based on the given probabilities.
 
         Args:
-            config: Configuration to sample from.
             probabilities: Probabilities for each element in the configuration.
 
         Returns:
@@ -45,7 +128,7 @@ class ProbDD(Algorithm):
 
         """
         c: Configuration = []
-        keys: list[int] = list(probabilities.keys())
+        keys: list[Any] = probabilities.key_list()
         last: float = 0.0
         i: int = 0
         k: int = 0
@@ -74,7 +157,7 @@ class ProbDD(Algorithm):
 
         return c
 
-    def _ratio(self, deleted: Configuration, probabilities: dict[int, float]) -> float:
+    def _ratio(self, deleted: Configuration, probabilities: Probability) -> float:
         """Calculate the ratio of the probabilities of the deleted elements.
 
         Args:
@@ -92,22 +175,29 @@ class ProbDD(Algorithm):
         return 1.0 / (1.0 - ratio)
 
     def _difference(
-        self, config1: Configuration, config2: Configuration
+        self, config1: Configuration, config2: Configuration, *, to_tuple: bool = False
     ) -> Configuration:
         """Get the difference between two configurations.
 
         Args:
             config1: First configuration.
             config2: Second configuration.
+            to_tuple: Whether to convert elements to tuples.
 
         Returns:
             Difference between the two configurations.
 
         """
-        config: set[Any] = set(config2)
-        return [c for c in config1 if c not in config]
+        if to_tuple:
+            config: set[Any] = set()
+            for c in config2:
+                config.add(tuple(c))
+            return [c for c in config1 if tuple(c) not in config]
+        else:
+            config = set(config2)
+            return [c for c in config1 if c not in config]
 
-    def _stop(self, probabilities: dict[int, float], threshold: float) -> bool:
+    def _stop(self, probabilities: Probability, threshold: float) -> bool:
         """Check if the algorithm should stop based on the probabilities and threshold.
 
         Args:
@@ -153,7 +243,8 @@ class ProbDD(Algorithm):
         """
         logger.debug("Starting ProbDD algorithm")
         passed: Configuration = list(config)
-        probabilities: dict[int, float] = {}
+        to_tuple: bool = len(config) > 0 and isinstance(config[0], list)
+        probabilities: Probability = Probability(to_tuple=to_tuple)
         threshold: float = 0.8
         for c in config:
             probabilities[c] = 0.1
@@ -162,25 +253,23 @@ class ProbDD(Algorithm):
             if self._stop(probabilities, threshold):
                 break
 
-            probabilities = dict(
-                sorted(probabilities.items(), key=lambda item: item[1])
-            )
+            probabilities.sort()
             logger.debug(f"Current probabilities: {probabilities}")
 
-            deleted: Configuration = self._sample(config, probabilities)
+            deleted: Configuration = self._sample(probabilities)
             logger.debug(f"Sampling configuration: {deleted}")
 
-            config = self._difference(passed, deleted)
+            config = self._difference(passed, deleted, to_tuple=to_tuple)
             outcome: Outcome = self._test(oracle, config, cache=cache)
             logger.debug(f"Testing configuration: {config} => {outcome}")
             if outcome == Outcome.FAIL:
-                for key in probabilities.keys():
+                for key in probabilities.key_list():
                     if key not in config:
                         probabilities[key] = 0.0
                 passed = config
                 continue
 
-            for key in probabilities.keys():
+            for key in probabilities.key_list():
                 if (
                     key not in config
                     and probabilities[key] != 0.0

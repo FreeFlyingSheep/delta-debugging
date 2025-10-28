@@ -54,6 +54,7 @@ def main() -> None:
                         ProbDD(),
                         HDD(KaitaiStructParser("ELF"), DDMin()),
                         HDD(KaitaiStructParser("ELF"), ZipMin()),
+                        HDD(KaitaiStructParser("ELF"), ProbDD()),
                     ],
                     command=bug["command"],
                     check=check(bug),
