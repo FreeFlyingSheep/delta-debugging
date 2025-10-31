@@ -84,11 +84,11 @@ class ZipMin(Algorithm):
             cache: Cache for storing test outcomes.
 
         Returns:
-            A tuple of the updated configuration and the number of tailing characters that could not be removed.
+            A tuple of the updated configuration and the number of deficit characters.
 
         """
         c: Configuration = []
-        deficit: int = 0
+        count: int = 0
 
         for i in range(0, len(config), length):
             removed, remaining = config[i : i + length], config[i + length :]
@@ -99,10 +99,9 @@ class ZipMin(Algorithm):
             )
             if outcome != Outcome.FAIL:
                 c += removed
-                deficit += len(removed)
-            else:
-                deficit = 0
+            count += 1
 
+        deficit: int = max(count - (len(config) - len(c)), 0)
         logger.debug(f"Deficit after fragment removal: {deficit}")
 
         return c, deficit
@@ -138,6 +137,7 @@ class ZipMin(Algorithm):
                     pre, config, post = self._remove_last_char(
                         oracle, pre, config, post, cache=cache
                     )
+                deficit = 0
             else:
                 c, deficit = self._remove_check_each_fragment(
                     oracle, pre, config, post, length, cache=cache
