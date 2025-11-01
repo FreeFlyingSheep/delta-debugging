@@ -1,0 +1,482 @@
+[
+    {
+        "File": "/tmp/bug_392146",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 70352,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.06844155105753923,
+        "Count": 197502,
+        "Time": 2895.303966283798
+    },
+    {
+        "File": "/tmp/bug_392146",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 70352,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.06844155105753923,
+        "Count": 112755,
+        "Time": 804.2351124286652
+    },
+    {
+        "File": "/tmp/bug_392146",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 70352,
+        "Output Size": 70325,
+        "Reduction Ratio": 0.00038378439845349104,
+        "Count": 437,
+        "Time": 12.044988632202148
+    },
+    {
+        "File": "/tmp/bug_392146",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70352,
+        "Output Size": 5866,
+        "Reduction Ratio": 0.9166192858767341,
+        "Count": 10921,
+        "Time": 322.9637258052826
+    },
+    {
+        "File": "/tmp/bug_392146",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70352,
+        "Output Size": 5866,
+        "Reduction Ratio": 0.9166192858767341,
+        "Count": 9656,
+        "Time": 282.05710196495056
+    },
+    {
+        "File": "/tmp/bug_392146",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70352,
+        "Output Size": 5866,
+        "Reduction Ratio": 0.9166192858767341,
+        "Count": 1856,
+        "Time": 64.92312383651733
+    },
+    {
+        "File": "/tmp/bug_412377",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 67040,
+        "Output Size": 65297,
+        "Reduction Ratio": 0.025999403341288783,
+        "Count": 258286,
+        "Time": 7811.678518295288
+    },
+    {
+        "File": "/tmp/bug_412377",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 67040,
+        "Output Size": 65297,
+        "Reduction Ratio": 0.025999403341288783,
+        "Count": 113432,
+        "Time": 3410.510004043579
+    },
+    {
+        "File": "/tmp/bug_412377",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 67040,
+        "Output Size": 66937,
+        "Reduction Ratio": 0.001536396181384248,
+        "Count": 198,
+        "Time": 3.9254374504089355
+    },
+    {
+        "File": "/tmp/bug_412377",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 67040,
+        "Output Size": 1576,
+        "Reduction Ratio": 0.976491646778043,
+        "Count": 2826,
+        "Time": 72.1047191619873
+    },
+    {
+        "File": "/tmp/bug_412377",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 67040,
+        "Output Size": 1576,
+        "Reduction Ratio": 0.976491646778043,
+        "Count": 2546,
+        "Time": 67.06626605987549
+    },
+    {
+        "File": "/tmp/bug_412377",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 67040,
+        "Output Size": 1576,
+        "Reduction Ratio": 0.976491646778043,
+        "Count": 570,
+        "Time": 28.323160648345947
+    },
+    {
+        "File": "/tmp/bug_460616",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 70520,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.07066080544526375,
+        "Count": 255392,
+        "Time": 6328.055676460266
+    },
+    {
+        "File": "/tmp/bug_460616",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 70520,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.07066080544526375,
+        "Count": 112782,
+        "Time": 809.9812223911285
+    },
+    {
+        "File": "/tmp/bug_460616",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 70520,
+        "Output Size": 70488,
+        "Reduction Ratio": 0.00045377197958026093,
+        "Count": 455,
+        "Time": 14.775665998458862
+    },
+    {
+        "File": "/tmp/bug_460616",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70520,
+        "Output Size": 6703,
+        "Reduction Ratio": 0.9049489506522972,
+        "Count": 12846,
+        "Time": 401.7671594619751
+    },
+    {
+        "File": "/tmp/bug_460616",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70520,
+        "Output Size": 6703,
+        "Reduction Ratio": 0.9049489506522972,
+        "Count": 11239,
+        "Time": 354.92432022094727
+    },
+    {
+        "File": "/tmp/bug_460616",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70520,
+        "Output Size": 6703,
+        "Reduction Ratio": 0.9049489506522972,
+        "Count": 2017,
+        "Time": 83.9497857093811
+    },
+    {
+        "File": "/tmp/bug_469782",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 76848,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.1471866541744743,
+        "Count": 199068,
+        "Time": 1351.0631806850433
+    },
+    {
+        "File": "/tmp/bug_469782",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 76848,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.1471866541744743,
+        "Count": 112398,
+        "Time": 804.7923421859741
+    },
+    {
+        "File": "/tmp/bug_469782",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 76848,
+        "Output Size": 72225,
+        "Reduction Ratio": 0.0601577139287945,
+        "Count": 206,
+        "Time": 19.624731063842773
+    },
+    {
+        "File": "/tmp/bug_469782",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 76848,
+        "Output Size": 11877,
+        "Reduction Ratio": 0.8454481574016239,
+        "Count": 22823,
+        "Time": 930.3513576984406
+    },
+    {
+        "File": "/tmp/bug_469782",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 76848,
+        "Output Size": 11877,
+        "Reduction Ratio": 0.8454481574016239,
+        "Count": 19897,
+        "Time": 822.9254999160767
+    },
+    {
+        "File": "/tmp/bug_469782",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 76848,
+        "Output Size": 11877,
+        "Reduction Ratio": 0.8454481574016239,
+        "Count": 3297,
+        "Time": 208.27390718460083
+    },
+    {
+        "File": "/tmp/bug_476465",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 71056,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.07767113262778653,
+        "Count": 221568,
+        "Time": 3575.629201889038
+    },
+    {
+        "File": "/tmp/bug_476465",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 71056,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.07767113262778653,
+        "Count": 112813,
+        "Time": 787.6593015193939
+    },
+    {
+        "File": "/tmp/bug_476465",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 71056,
+        "Output Size": 71025,
+        "Reduction Ratio": 0.0004362756136005404,
+        "Count": 477,
+        "Time": 12.345335245132446
+    },
+    {
+        "File": "/tmp/bug_476465",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 71056,
+        "Output Size": 7838,
+        "Reduction Ratio": 0.889692636793515,
+        "Count": 14362,
+        "Time": 424.0057022571564
+    },
+    {
+        "File": "/tmp/bug_476465",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 71056,
+        "Output Size": 7838,
+        "Reduction Ratio": 0.889692636793515,
+        "Count": 12779,
+        "Time": 385.7119550704956
+    },
+    {
+        "File": "/tmp/bug_476465",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 71056,
+        "Output Size": 7838,
+        "Reduction Ratio": 0.889692636793515,
+        "Count": 2157,
+        "Time": 77.18065142631531
+    },
+    {
+        "File": "/tmp/bug_489338",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 72744,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.09907346310348619,
+        "Count": 202070,
+        "Time": 3954.0000171661377
+    },
+    {
+        "File": "/tmp/bug_489338",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 72744,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.09907346310348619,
+        "Count": 112666,
+        "Time": 800.245010137558
+    },
+    {
+        "File": "/tmp/bug_489338",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 72744,
+        "Output Size": 72655,
+        "Reduction Ratio": 0.0012234686022214892,
+        "Count": 468,
+        "Time": 17.953888416290283
+    },
+    {
+        "File": "/tmp/bug_489338",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 72744,
+        "Output Size": 7951,
+        "Reduction Ratio": 0.8906988892554712,
+        "Count": 14633,
+        "Time": 507.8326907157898
+    },
+    {
+        "File": "/tmp/bug_489338",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 72744,
+        "Output Size": 7951,
+        "Reduction Ratio": 0.8906988892554712,
+        "Count": 13006,
+        "Time": 445.81370520591736
+    },
+    {
+        "File": "/tmp/bug_489338",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 72744,
+        "Output Size": 7951,
+        "Reduction Ratio": 0.8906988892554712,
+        "Count": 2548,
+        "Time": 100.92487287521362
+    },
+    {
+        "File": "/tmp/bug_504466",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 70392,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.06897090578474827,
+        "Count": 197564,
+        "Time": 2904.0787024497986
+    },
+    {
+        "File": "/tmp/bug_504466",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 70392,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.06897090578474827,
+        "Count": 112806,
+        "Time": 803.9520924091339
+    },
+    {
+        "File": "/tmp/bug_504466",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 70392,
+        "Output Size": 70353,
+        "Reduction Ratio": 0.0005540402318445277,
+        "Count": 433,
+        "Time": 12.135125875473022
+    },
+    {
+        "File": "/tmp/bug_504466",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70392,
+        "Output Size": 6019,
+        "Reduction Ratio": 0.9144931242186612,
+        "Count": 11155,
+        "Time": 329.7103581428528
+    },
+    {
+        "File": "/tmp/bug_504466",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70392,
+        "Output Size": 6019,
+        "Reduction Ratio": 0.9144931242186612,
+        "Count": 9885,
+        "Time": 287.56118392944336
+    },
+    {
+        "File": "/tmp/bug_504466",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70392,
+        "Output Size": 6019,
+        "Reduction Ratio": 0.9144931242186612,
+        "Count": 1831,
+        "Time": 66.52931690216064
+    },
+    {
+        "File": "/tmp/bug_508154",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 70456,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.06981662314068354,
+        "Count": 255271,
+        "Time": 6693.907626867294
+    },
+    {
+        "File": "/tmp/bug_508154",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 70456,
+        "Output Size": 65537,
+        "Reduction Ratio": 0.06981662314068354,
+        "Count": 112679,
+        "Time": 835.7231442928314
+    },
+    {
+        "File": "/tmp/bug_508154",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 70456,
+        "Output Size": 70410,
+        "Reduction Ratio": 0.0006528897467923243,
+        "Count": 433,
+        "Time": 15.638086318969727
+    },
+    {
+        "File": "/tmp/bug_508154",
+        "Algorithm": "HDD with ddmin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70456,
+        "Output Size": 6277,
+        "Reduction Ratio": 0.9109089360735778,
+        "Count": 11721,
+        "Time": 881.4452450275421
+    },
+    {
+        "File": "/tmp/bug_508154",
+        "Algorithm": "HDD with ZipMin using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70456,
+        "Output Size": 6277,
+        "Reduction Ratio": 0.9109089360735778,
+        "Count": 10353,
+        "Time": 770.6938440799713
+    },
+    {
+        "File": "/tmp/bug_508154",
+        "Algorithm": "HDD with ProbDD using KaitaiStructParser for elf (expand_bytes=True)",
+        "Cache": "None",
+        "Input Size": 70456,
+        "Output Size": 6277,
+        "Reduction Ratio": 0.9109089360735778,
+        "Count": 1916,
+        "Time": 161.21606302261353
+    }
+]

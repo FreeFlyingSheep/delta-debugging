@@ -1,15 +1,13 @@
 """Benchmark for delta debugging algorithms."""
 
 import itertools
-import json
 import logging
 import os
 from collections import Counter
-from dataclasses import dataclass
-from subprocess import CompletedProcess
-from typing import Any, Callable, Generator, Self
 
-from tabulate import tabulate
+from subprocess import CompletedProcess
+from typing import Callable, Generator, Self
+
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
@@ -19,84 +17,10 @@ from delta_debugging.configuration import Configuration, load
 from delta_debugging.debugger import Debugger
 from delta_debugging.debuggers import CommandDebugger, FileDebugger
 from delta_debugging.outcome import Outcome
+from delta_debugging.result import Result, ResultCollection
 
 
 logger: logging.Logger = logging.getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class Result:
-    """Result of a test case run."""
-
-    file: str
-    """File where the input is from."""
-    algorithm: str
-    """Name of the algorithm used."""
-    cache: str
-    """Name of the cache used."""
-    input_size: int
-    """Size of the input."""
-    output_size: int
-    """Size of the output."""
-    count: int
-    """Number of calls to the oracle function."""
-    time: float
-    """Time (in seconds) taken for the test case run."""
-
-    @property
-    def reduction_ratio(self) -> float:
-        """Compute the reduction ratio.
-
-        If the input size is 0, the reduction ratio is defined to be 1.0.
-
-        Returns:
-            The reduction ratio.
-
-        """
-        if self.input_size == 0:
-            return 1.0
-        else:
-            return (self.input_size - self.output_size) / self.input_size
-
-    @classmethod
-    def from_json(cls, data: dict[str, Any]) -> Self:
-        """Create a Result instance from a JSON dictionary.
-
-        Args:
-            data: JSON dictionary.
-
-        Returns:
-            A Result instance.
-
-        """
-        return cls(
-            file=data["file"],
-            algorithm=data["algorithm"],
-            cache=data["cache"],
-            input_size=data["input_size"],
-            output_size=data["output_size"],
-            count=data["count"],
-            time=data["time"],
-        )
-
-    def to_json(self) -> dict[str, float | int | str]:
-        """Convert the result to a JSON-serializable dictionary.
-
-        Returns:
-            A JSON-serializable dictionary representation of the result.
-
-        """
-        result: dict[str, float | int | str] = {
-            "File": self.file,
-            "Algorithm": self.algorithm,
-            "Cache": self.cache,
-            "Input Size": self.input_size,
-            "Output Size": self.output_size,
-            "Reduction Ratio": self.reduction_ratio,
-            "Count": self.count,
-            "Time": self.time,
-        }
-        return result
 
 
 class TestCase:
@@ -262,7 +186,7 @@ class Benchmark:
     """List of test cases to benchmark."""
     file: str | os.PathLike | None
     """File to save results to."""
-    results: list[Result]
+    results: ResultCollection
     """List of results from benchmark runs."""
 
     def __init__(
@@ -277,7 +201,7 @@ class Benchmark:
         """
         self.test_cases = test_cases
         self.file = file
-        self.results = []
+        self.results = ResultCollection()
 
     def validate(self, show_process: bool = False) -> list[bool]:
         """Validate the input for each test case.
@@ -319,7 +243,7 @@ class Benchmark:
 
         return results
 
-    def run(self, *, show_process: bool = False) -> list[Result]:
+    def run(self, *, show_process: bool = False) -> ResultCollection:
         """Run the benchmark and save results to file if specified.
 
         Args:
@@ -330,7 +254,6 @@ class Benchmark:
 
         """
         logger.debug("Starting benchmark")
-        results: list[dict[str, float | int | str]] = []
         total: int = sum(len(test_case.debuggers) for test_case in self.test_cases)
         pbar: tqdm | None = None
         with logging_redirect_tqdm(loggers=[logger]):
@@ -340,21 +263,15 @@ class Benchmark:
                 )
         for test_case in self.test_cases:
             for result in test_case.iter_run(show_process=show_process):
-                self.results.append(result)
-                results.append(result.to_json())
+                self.results.add(result)
 
                 logger.info(f"Current Results {len(self.results)}/{total}:")
-                messages: list[str] = self.to_string().splitlines()
+                messages: list[str] = self.results.to_string().splitlines()
                 for message in messages:
                     logger.info(message)
 
                 if self.file is not None:
-                    with open(self.file, "w") as f:
-                        try:
-                            json.dump(results, f, indent=4)
-                        except Exception:
-                            logger.exception("Error writing benchmark results to file")
-                            return self.results
+                    self.results.store_results(self.file)
 
                 if pbar is not None:
                     pbar.update(1)
@@ -364,81 +281,3 @@ class Benchmark:
 
         logger.debug("Benchmark completed")
         return self.results
-
-    def read_results(self, file: str | os.PathLike | None) -> list[Result]:
-        """Read results from file or the benchmark's file if specified.
-
-        Args:
-            file: File to read results from. If None, use the benchmark's file. If both are None, results will be empty.
-
-        """
-        results: list[dict[str, float | int | str]] = []
-        try:
-            if file is not None:
-                logger.debug(f"Reading results from file: {file}")
-                with open(file, "r") as f:
-                    results = json.load(f)
-            elif self.file is not None:
-                logger.debug(f"Reading results from file: {self.file}")
-                with open(self.file, "r") as f:
-                    results = json.load(f)
-            else:
-                logger.debug(
-                    "No file specified for reading results; results will be empty"
-                )
-                results = []
-        except Exception:
-            logger.exception("Error reading benchmark results from file")
-            self.results = []
-            return self.results
-
-        self.results = [Result.from_json(result) for result in results]
-        return self.results
-
-    def _remove_unique_column(
-        self, column: str, results: list[dict[str, float | int | str]]
-    ) -> None:
-        """Remove a column from the results if it contains only a single unique value.
-
-        Args:
-            column: Column name to check and potentially remove.
-            results: List of result dictionaries.
-
-        """
-        values: set[float | int | str] = set()
-        for result in results:
-            value: float | int | str = result[column]
-            values.add(value)
-            if len(values) > 1:
-                break
-        if len(values) <= 1:
-            for result in results:
-                del result[column]
-
-    def to_string(self, remove_unique_columns: bool = True, **kwargs) -> str:
-        """Get a string representation of the benchmark results.
-
-        Args:
-            remove_unique_columns: Whether to remove columns with a single unique value. Defaults to True.
-            kwargs: Additional arguments to pass to tabulate. Defaults are:
-                headers: "keys"
-                floatfmt: ".2f"
-                showindex: "always"
-
-        """
-        results: list[dict[str, float | int | str]] = [
-            result.to_json() for result in self.results
-        ]
-
-        if remove_unique_columns:
-            self._remove_unique_column("File", results)
-            self._remove_unique_column("Algorithm", results)
-            self._remove_unique_column("Cache", results)
-
-        if "headers" not in kwargs:
-            kwargs["headers"] = "keys"
-        if "floatfmt" not in kwargs:
-            kwargs["floatfmt"] = ".2f"
-        if "showindex" not in kwargs:
-            kwargs["showindex"] = "always"
-        return tabulate(results, **kwargs)

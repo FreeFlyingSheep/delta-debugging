@@ -2,7 +2,7 @@
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.algorithms import DDMin, HDD, ProbDD, ZipMin
-from delta_debugging.benchmark import Benchmark, Result, TestCase
+from delta_debugging.benchmark import Benchmark, TestCase
 from delta_debugging.cache import Cache
 from delta_debugging.caches import HashCache
 from delta_debugging.caches import TreeCache
@@ -12,12 +12,12 @@ from delta_debugging.debuggers import CommandDebugger, FileDebugger
 from delta_debugging.outcome import Outcome
 from delta_debugging.parser import Node, Parser
 from delta_debugging.parsers import KaitaiStructParser, TreeSitterParser
+from delta_debugging.result import Result, ResultCollection
 
 
 __all__: list[str] = [
     "Algorithm",
     "Benchmark",
-    "Result",
     "TestCase",
     "DDMin",
     "HDD",
@@ -36,4 +36,6 @@ __all__: list[str] = [
     "Parser",
     "KaitaiStructParser",
     "TreeSitterParser",
+    "Result",
+    "ResultCollection",
 ]

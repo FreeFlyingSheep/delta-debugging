@@ -1,0 +1,362 @@
+[
+    {
+        "File": "/tmp/bug_20605",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 21504,
+        "Output Size": 17782,
+        "Reduction Ratio": 0.17308407738095238,
+        "Count": 38201,
+        "Time": 143.772296667099
+    },
+    {
+        "File": "/tmp/bug_20605",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 21504,
+        "Output Size": 17782,
+        "Reduction Ratio": 0.17308407738095238,
+        "Count": 29979,
+        "Time": 107.95002222061157
+    },
+    {
+        "File": "/tmp/bug_20605",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 21504,
+        "Output Size": 17783,
+        "Reduction Ratio": 0.17303757440476192,
+        "Count": 464,
+        "Time": 4.366002798080444
+    },
+    {
+        "File": "/tmp/bug_21135",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 968,
+        "Output Size": 640,
+        "Reduction Ratio": 0.33884297520661155,
+        "Count": 2210,
+        "Time": 3.5165278911590576
+    },
+    {
+        "File": "/tmp/bug_21135",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 968,
+        "Output Size": 808,
+        "Reduction Ratio": 0.1652892561983471,
+        "Count": 1763,
+        "Time": 2.8496763706207275
+    },
+    {
+        "File": "/tmp/bug_21135",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 968,
+        "Output Size": 886,
+        "Reduction Ratio": 0.08471074380165289,
+        "Count": 123,
+        "Time": 0.21939945220947266
+    },
+    {
+        "File": "/tmp/bug_21136",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 3964,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.005045408678102927,
+        "Count": 10581,
+        "Time": 20.778803825378418
+    },
+    {
+        "File": "/tmp/bug_21136",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 3964,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.005045408678102927,
+        "Count": 5950,
+        "Time": 11.80402159690857
+    },
+    {
+        "File": "/tmp/bug_21136",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 3964,
+        "Output Size": 3951,
+        "Reduction Ratio": 0.003279515640766902,
+        "Count": 383,
+        "Time": 1.0173618793487549
+    },
+    {
+        "File": "/tmp/bug_21138",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 4010,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.016458852867830425,
+        "Count": 10637,
+        "Time": 20.205005884170532
+    },
+    {
+        "File": "/tmp/bug_21138",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 4010,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.016458852867830425,
+        "Count": 6016,
+        "Time": 11.366233587265015
+    },
+    {
+        "File": "/tmp/bug_21138",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 4010,
+        "Output Size": 3999,
+        "Reduction Ratio": 0.002743142144638404,
+        "Count": 383,
+        "Time": 0.9624502658843994
+    },
+    {
+        "File": "/tmp/bug_21139",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 4011,
+        "Output Size": 3992,
+        "Reduction Ratio": 0.004736973323360758,
+        "Count": 7144,
+        "Time": 13.65879774093628
+    },
+    {
+        "File": "/tmp/bug_21139",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 4011,
+        "Output Size": 3992,
+        "Reduction Ratio": 0.004736973323360758,
+        "Count": 6019,
+        "Time": 11.758339405059814
+    },
+    {
+        "File": "/tmp/bug_21139",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 4011,
+        "Output Size": 4008,
+        "Reduction Ratio": 0.0007479431563201197,
+        "Count": 413,
+        "Time": 1.0594217777252197
+    },
+    {
+        "File": "/tmp/bug_21143",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 3964,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.005045408678102927,
+        "Count": 10581,
+        "Time": 20.255024433135986
+    },
+    {
+        "File": "/tmp/bug_21143",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 3964,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.005045408678102927,
+        "Count": 5950,
+        "Time": 11.442678213119507
+    },
+    {
+        "File": "/tmp/bug_21143",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 3964,
+        "Output Size": 3954,
+        "Reduction Ratio": 0.0025227043390514633,
+        "Count": 380,
+        "Time": 0.9830703735351562
+    },
+    {
+        "File": "/tmp/bug_21144",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 3977,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.008297711843097813,
+        "Count": 10570,
+        "Time": 20.12585711479187
+    },
+    {
+        "File": "/tmp/bug_21144",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 3977,
+        "Output Size": 3944,
+        "Reduction Ratio": 0.008297711843097813,
+        "Count": 5969,
+        "Time": 11.531090259552002
+    },
+    {
+        "File": "/tmp/bug_21144",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 3977,
+        "Output Size": 3966,
+        "Reduction Ratio": 0.0027659039476992707,
+        "Count": 404,
+        "Time": 1.0688672065734863
+    },
+    {
+        "File": "/tmp/bug_21145",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 3180,
+        "Output Size": 2680,
+        "Reduction Ratio": 0.15723270440251572,
+        "Count": 7791,
+        "Time": 13.78165888786316
+    },
+    {
+        "File": "/tmp/bug_21145",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 3180,
+        "Output Size": 2680,
+        "Reduction Ratio": 0.15723270440251572,
+        "Count": 4253,
+        "Time": 7.590353488922119
+    },
+    {
+        "File": "/tmp/bug_21145",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 3180,
+        "Output Size": 3159,
+        "Reduction Ratio": 0.006603773584905661,
+        "Count": 383,
+        "Time": 0.9308843612670898
+    },
+    {
+        "File": "/tmp/bug_21409",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 1547,
+        "Output Size": 1160,
+        "Reduction Ratio": 0.2501616031027796,
+        "Count": 1946,
+        "Time": 3.486938953399658
+    },
+    {
+        "File": "/tmp/bug_21409",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 1547,
+        "Output Size": 1160,
+        "Reduction Ratio": 0.2501616031027796,
+        "Count": 1904,
+        "Time": 3.4753360748291016
+    },
+    {
+        "File": "/tmp/bug_21409",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 1547,
+        "Output Size": 1544,
+        "Reduction Ratio": 0.0019392372333548805,
+        "Count": 250,
+        "Time": 0.5016560554504395
+    },
+    {
+        "File": "/tmp/bug_21409_2",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 2353,
+        "Output Size": 1422,
+        "Reduction Ratio": 0.3956651083722907,
+        "Count": 2961,
+        "Time": 5.494673013687134
+    },
+    {
+        "File": "/tmp/bug_21409_2",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 2353,
+        "Output Size": 1422,
+        "Reduction Ratio": 0.3956651083722907,
+        "Count": 2527,
+        "Time": 4.729674339294434
+    },
+    {
+        "File": "/tmp/bug_21409_2",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 2353,
+        "Output Size": 2346,
+        "Reduction Ratio": 0.0029749256268593286,
+        "Count": 345,
+        "Time": 0.7690401077270508
+    },
+    {
+        "File": "/tmp/bug_21414",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 683,
+        "Output Size": 680,
+        "Reduction Ratio": 0.004392386530014641,
+        "Count": 1296,
+        "Time": 2.1277594566345215
+    },
+    {
+        "File": "/tmp/bug_21414",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 683,
+        "Output Size": 680,
+        "Reduction Ratio": 0.004392386530014641,
+        "Count": 1143,
+        "Time": 1.8811426162719727
+    },
+    {
+        "File": "/tmp/bug_21414",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 683,
+        "Output Size": 680,
+        "Reduction Ratio": 0.004392386530014641,
+        "Count": 107,
+        "Time": 0.17495465278625488
+    },
+    {
+        "File": "/tmp/bug_30886",
+        "Algorithm": "ddmin",
+        "Cache": "None",
+        "Input Size": 16880,
+        "Output Size": 12321,
+        "Reduction Ratio": 0.27008293838862557,
+        "Count": 42627,
+        "Time": 115.37633538246155
+    },
+    {
+        "File": "/tmp/bug_30886",
+        "Algorithm": "ZipMin",
+        "Cache": "None",
+        "Input Size": 16880,
+        "Output Size": 12321,
+        "Reduction Ratio": 0.27008293838862557,
+        "Count": 21268,
+        "Time": 58.23571467399597
+    },
+    {
+        "File": "/tmp/bug_30886",
+        "Algorithm": "ProbDD",
+        "Cache": "None",
+        "Input Size": 16880,
+        "Output Size": 16829,
+        "Reduction Ratio": 0.0030213270142180094,
+        "Count": 533,
+        "Time": 3.4101617336273193
+    }
+]

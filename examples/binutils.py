@@ -61,7 +61,7 @@ def main() -> None:
         return
 
     benchmark.run(show_process=True)
-    print(benchmark.to_string())
+    print(benchmark.results.to_string())
 
 
 if __name__ == "__main__":

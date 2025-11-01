@@ -11,6 +11,7 @@ It also provides benchmarks for testing and evaluating the effectiveness and eff
 - Multiple delta debugging algorithms: ddmin, ZipMin, HDD, ProbDD
 - Support for various input types: files (both binary and text), strings, lists
 - Benchmarking tools to evaluate algorithm performance
+- Visualization tools for benchmark results
 - Pythonic API for easy integration and usage
 
 ## Installation
@@ -30,6 +31,7 @@ See [API documentation](https://FreeFlyingSheep.github.io/delta-debugging) for m
 - `examples/benchmark.py` uses the benchmarking tools provided by the framework.
 - `examples/binutils_gdb.py` uses the delta debugging framework for minimizing executable inputs for `binutils-gdb` bugs.
 - `examples/valgrind.py` uses the delta debugging framework for minimizing executable inputs for `valgrind` bugs.
+- `examples/figure.py` generates comparison figures from benchmark results.
 
 To run the examples, install the project as described in the installation section.
 Then use `uv run examples/<example_file>` to run the examples.
@@ -37,6 +39,10 @@ Then use `uv run examples/<example_file>` to run the examples.
 To run `examples/binutils_gdb.py` and `examples/valgrind.py`, [Docker](https://www.docker.com/) is required.
 Refer to `scripts/run_docker.sh` for building and running the Docker container.
 Note that these two examples may take a long time to run.
+
+Additionally, a QEMU image is provided to run the examples in a consistent environment.
+The results of running the examples using the QEMU image are also provided in the `examples/` folder.
+The QEMU image can be downloaded from [Releases](https://github.com/FreeFlyingSheep/delta-debugging/releases).
 
 ## Related Projects
 

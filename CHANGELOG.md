@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added visualization tools for benchmark results.
+- Added visualization example `examples/figure.py`.
+- Added results for examples.
+
 ## [0.4.0]
 
 ### Changed
