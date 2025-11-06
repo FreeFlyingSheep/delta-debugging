@@ -2,7 +2,7 @@
 
 import logging
 from collections.abc import MutableMapping
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 
 from delta_debugging.algorithm import Algorithm
 from delta_debugging.cache import Cache
@@ -63,7 +63,7 @@ class Probability(MutableMapping):
             key = tuple(key)
         del self._data[key]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         """Iterate over the keys in the mapping.
 
         Returns:
@@ -80,6 +80,15 @@ class Probability(MutableMapping):
 
         """
         return len(self._data)
+
+    def __str__(self) -> str:
+        """Get the string representation of the Probability mapping.
+
+        Returns:
+            String representation.
+
+        """
+        return str(self._data)
 
     def key_list(self) -> list[Any]:
         """Get the list of keys.

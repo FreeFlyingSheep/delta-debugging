@@ -126,6 +126,8 @@ class ZipMin(Algorithm):
         """
         logger.debug("Starting ZipMin algorithm")
         length: int = len(config) // 2
+        logging.debug(f"Initial fragment length: {length}")
+
         count: int = 0
         deficit: int = 0
         pre: Configuration = []
@@ -144,6 +146,7 @@ class ZipMin(Algorithm):
                 )
                 if c == config:
                     length = length // 2
+                    logging.debug(f"Reducing fragment length to {length}")
                 config = c
             count += 1
 

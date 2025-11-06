@@ -83,6 +83,7 @@ class DDMin(Algorithm):
         """
         logger.debug("Starting ddmin algorithm")
         length: int = len(config) // 2
+        logging.debug(f"Initial fragment length: {length}")
 
         while length > 0 and len(config) > 0:
             c: Configuration = self._remove_check_each_fragment(
@@ -90,6 +91,7 @@ class DDMin(Algorithm):
             )
             if c == config:
                 length = length // 2
+                logging.debug(f"Reducing fragment length to {length}")
             config = c
 
         logger.debug(f"ddmin algorithm completed with reduced configuration: {config}")

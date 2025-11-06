@@ -265,6 +265,8 @@ class HDD(Algorithm):
         """
         logger.debug("Starting HDD algorithm")
         root: Node = self.parser.parse(config)
+        for line in root.to_string().splitlines():
+            logger.debug(f"Parsed tree root: {line}")
         tree: _Tree = _Tree(root, config, self.parser.expand_whitespace)
 
         level: int = 0
