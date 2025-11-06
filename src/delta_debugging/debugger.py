@@ -167,5 +167,6 @@ class Debugger:
             f"Reduced ratio: "
             f"{(len(self.config) - len(self.result)) / len(self.config):.2%}"
         )
+        output.append(f"Test counts: {sum(self.counters.values())}")
         output.append(f"Total time: {self.time:.2f} seconds")
         return "\n".join(output)
